@@ -22,3 +22,7 @@ S" ./lib/kernel.compat.fth"               INCLUDED
 \ Level 1 (minimal level of supporting)
 S" ./iterpreter-kernel.basic.fth"         INCLUDED
 
+\ Level 2 - managing the interpreters
+S" ./lib/compiler.compat.fth"             INCLUDED
+S" ./lib/combinator.fth"                  INCLUDED
+S" ./iterpreter-kernel.stdlib.fth"        INCLUDED
