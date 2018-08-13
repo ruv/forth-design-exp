@@ -26,3 +26,7 @@ S" ./iterpreter-kernel.basic.fth"         INCLUDED
 S" ./lib/compiler.compat.fth"             INCLUDED
 S" ./lib/combinator.fth"                  INCLUDED
 S" ./iterpreter-kernel.stdlib.fth"        INCLUDED
+
+\ Level 3 - standard library
+S" ./ttoken.stdlib.fth"                   INCLUDED
+S" ./interpreter.stdlib.fth"              INCLUDED
