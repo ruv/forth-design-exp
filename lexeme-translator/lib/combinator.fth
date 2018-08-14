@@ -10,15 +10,15 @@
 
 \ Combinators
 
-\ Partial function application for one argument
-\ Combinator that creates the new definition fixing one top argument
+\ Partial function application for one argument.
+\ Create the new definition fixing one top argument for given xt.
 : PARTIAL1 ( x1  xt -- xt2 )
   ?STATE0
-   >R >R :NONAME R> LIT, R> COMPILE, POSTPONE ;
+  >R >R :NONAME R> LIT, R> COMPILE, POSTPONE ;
 ;
 
-\ Partial function application for two arguments
-\ Combinator that creates the new definition fixing two top arguments
+\ Partial function application for two arguments.
+\ Create the new definition fixing two top arguments for given xt.
 : PARTIAL2 ( x1 x2  xt -- xt2 )
   ?STATE0
   >R 2>R :NONAME R> R> LIT, LIT, R> COMPILE, POSTPONE ;

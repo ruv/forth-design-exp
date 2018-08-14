@@ -68,8 +68,16 @@ VARIABLE SL \ state of postponing level
 : TT-2LIT   ( x x   -- x x    | )   ['] 2LIT,   TT-LITERAL-WITH ;
 : TT-SLIT   ( d-txt -- d-txt  | )   ['] SLIT,   TT-LITERAL-WITH ;
 [DEFINED] FLIT, [IF]
-: TT-FLIT   ( d-txt -- d-txt  | )   ['] FLIT,   TT-LITERAL-WITH ;
+: TT-FLIT   ( F: x -- x       | )   ['] FLIT,   TT-LITERAL-WITH ;
 [THEN]
+
+\ One interesting side effect of this approach is that an interpreter
+\ for the new literals can return just a compiler for this literals
+\ and TT-LITERAL-WITH
+\ For example:
+\ I-NUM-TRIPLE-FORM ( addr u -- 3*x '3LIT, 'TT-LITERAL-WITH | addr u 0 )
+\ where "'3LIT," is defined as ": 3LIT, >R 2LIT, R> LIT, ;"
+\ and can be even a quotation.
 
 
 
@@ -91,5 +99,6 @@ VARIABLE SL \ state of postponing level
   0 =? IF NAME>INTERPRET  EXECUTE EXIT THEN
   1 =  IF NAME>COMPILE    EXECUTE EXIT THEN
   DUP TT-LIT NAME>COMPILE TT-XT
+  \ NB: no need to keep nt before TT-LIT
 ;
 [THEN]

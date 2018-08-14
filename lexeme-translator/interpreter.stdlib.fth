@@ -10,21 +10,27 @@
 
 
 \ Interpreters for the common literals
+\ (partial list)
 
-: I-NUM-DU ( c-add u -- x x tt | c-add u 0 ) \ double cell number simple
+\ double-cell number unsigned plain
+: I-NUM-DU ( c-addr u -- x x tt | c-addr u 0 )
   2DUP 0 0 2SWAP >NUMBER NIP IF 2DROP 0 EXIT THEN 2NIP ['] TT-2LIT
 ;
-: I-NUM-U ( c-add u -- x tt | c-add u 0 ) \ single cell number simple
+\ single-cell number unsigned plain
+: I-NUM-U ( c-addr u -- x tt | c-addr u 0 )
   I-NUM-DU DUP IF 2DROP ['] TT-LIT THEN
 ;
-: I-NUM-DU-FORM-DOT ( c-add u -- x x tt | c-add u 0 ) \ double number with trailing dot
+\ double-cell number unsigned with trailing dot
+: I-NUM-DU-FORM-DOT ( c-addr u -- x x tt | c-addr u 0 )
   DUP 2 CHARS U< IF  0 EXIT THEN
   2DUP + CHAR- C@ [CHAR] . =
   IF  CHAR- I-NUM-DU ?ET CHAR+  THEN  0
 ;
+
 [DEFINED] TT-FLIT   [IF]
 [DEFINED] >FLOAT    [IF]
-: I-FLOAT-FORM-E ( c-addr u -- tt | c-addr u 0 ) \ float number in 'E' format
+\ float number in standard 'E' format
+: I-FLOAT-FORM-E ( c-addr u -- tt | c-addr u 0 ) ( F: -- f | )
   2DUP >FLOAT IF 2DROP ['] TT-FLIT EXIT THEN  0
 ;
 [THEN] [THEN]
@@ -34,18 +40,18 @@
 \ A helper to use the old fashioned stanard FIND word.
 \ Retun the given string as counted string in PAD buffer.
 : CARBON-COUNTED-PAD ( c-addr u -- c-addr2 )
-  DUP 82 > IF -19 THROW THEN \ PAD buffer is 84 characters at least
+  DUP 82 > IF -19 THROW THEN \ "definition name too long"; PAD buffer is 84 characters at least
   DUP PAD C! PAD CHAR+ SWAP MOVE PAD
 ;
 
-\ Interpret a lexem as Forth word,
+\ Interpret a lexem as a Forth word,
 \ represent the result as "execution token" xt and immediate flag
 : I-WORD ( c-addr u -- xt imm-flag tt | c-addr u 0 )
   2DUP CARBON-COUNTED-PAD FIND 0 =? IF DROP FALSE EXIT THEN 2NIP ( xt flag )
   1 = ['] TT-WORD
 ;
 
-\ Interpret a lexem as Forth word,
+\ Interpret a lexem as a Forth word,
 \ represent the result as "execution token" xt
 \ The immediate flag is ignored (if any).
 : I-NATIVE ( c-addr u -- xt tt | c-addr u 0 )
@@ -55,7 +61,7 @@
 
 [DEFINED] TT-NT     [IF]
 [DEFINED] FIND-NAME [IF] \ find-name ( c-addr u -- nt|0 )
-\ Interpret a lexem as Forth word,
+\ Interpret a lexem as a Forth word,
 \ represent the result as "name token" nt
 : I-NATIVE-NT ( c-addr u -- nt tt | c-addr u 0 )
   2DUP FIND-NAME DUP IF NIP NIP ['] TT-NT EXIT THEN
@@ -72,13 +78,13 @@
 \ The one simplest variant is following.
 
 
-: I-NUMBER-ANY ( c-add u -- i*x tt | c-add u 0 )
+: I-NUMBER-ANY ( c-addr u -- i*x tt | c-addr u 0 )
   I-NUM-DU-FORM-DOT  ?ET
   I-NUM-U            ?ET
   FALSE
 ;
 
-: I-LEXEM-DEFAULT ( c-add u -- i*x tt | c-add u 0 )
+: I-LEXEM-DEFAULT ( c-addr u -- i*x tt | c-addr u 0 )
   I-WORD             ?ET
   I-NUMBER-ANY       ?ET
   FALSE
