@@ -22,6 +22,9 @@
 \ Combinator that executes the given two definitions one by one
 \ left to right (i.e. the top one at the end) and stops on the first success.
 \ xt ( i*x -- j*x flag )
-: COMBINE-EITHER ( i*x xt1|0 xt2|0 -- j*x flag )
+: COMBINE-EITHER ( i*x xt1 xt2 -- j*x flag )
+  >R EXECUTE DUP IF RDROP EXIT THEN DROP R> EXECUTE
+;
+: COMBINE-EITHER-MAYBE ( i*x xt1|0 xt2|0 -- j*x flag )
   >R EXECUTE-MAYBE DUP IF RDROP EXIT THEN DROP R> EXECUTE-MAYBE
 ;
