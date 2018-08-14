@@ -30,3 +30,8 @@ S" ./iterpreter-kernel.stdlib.fth"        INCLUDED
 \ Level 3 - standard library
 S" ./ttoken.stdlib.fth"                   INCLUDED
 S" ./interpreter.stdlib.fth"              INCLUDED
+
+
+
+\ Eexample definitions for some standard words
+S" ./core.example.fth"                    INCLUDED
