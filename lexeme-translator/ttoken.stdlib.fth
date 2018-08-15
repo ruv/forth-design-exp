@@ -81,6 +81,13 @@ VARIABLE SL \ state of postponing level
 
 
 
+\ An interpreter has technical ability to do full translating of a lexeme by themself.
+\ Perhaps such usage should be specified and limited.
+\ In such case this designated "noop token" translator should be returned.
+: TT-NOOP ( -- ) ; \ it does nothing
+
+
+
 \ Token translator for the classic xt with immediate flag
 : TT-WORD ( i*x xt imm-flag -- j*x )
   STATE-LEVEL
