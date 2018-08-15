@@ -7,6 +7,6 @@ CR .( # --- Example definitions for some standard words ) CR
 
 : S"        ( " name" -- i*x  )   [CHAR] " PARSE TT-SLIT ; IMMEDIATE
 : '         ( " name" -- xt   )   PARSE-NAME I-NATIVE ?NF  ;
-: [']       ( " name" -- xt | )   PARSE-NAME I-NATIVE ?NF TT-LIT ; IMMEDIATE
-: [COMPILE] ( " name" --      )   PARSE-NAME I-NATIVE ?NF TT-XT  ; IMMEDIATE
+: [']       ( " name" -- xt | )   '                       TT-LIT ; IMMEDIATE
+: [COMPILE] ( " name" --      )   '                       TT-XT  ; IMMEDIATE
 : POSTPONE  ( " name" --      )   PARSE-NAME INC-STATE T-LEXEME DEC-STATE ?NF ; IMMEDIATE
