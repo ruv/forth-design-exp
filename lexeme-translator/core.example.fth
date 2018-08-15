@@ -10,3 +10,22 @@ CR .( # --- Example definitions for some standard words ) CR
 : [']       ( " name" -- xt | )   '                       TT-LIT ; IMMEDIATE
 : [COMPILE] ( " name" --      )   '                       TT-XT  ; IMMEDIATE
 : POSTPONE  ( " name" --      )   PARSE-NAME INC-STATE T-LEXEME DEC-STATE ?NF ; IMMEDIATE
+
+
+[DEFINED] TT-NT [IF]
+
+\ Example of more clever tick "'" word
+\ See: http://amforth.sourceforge.net/pr/Recognizer-rfc-D.html#and
+
+: TOKEN-XT? ( k*x tt -- xt true | k*x tt false )
+  ['] TT-XT     =? ?ET
+  ['] TT-WORD   =? IF DROP TRUE EXIT THEN
+  ['] TT-NT     =? IF NAME>INTERPRET TRUE EXIT THEN
+  FALSE
+;
+
+: '         ( " name" -- xt   )
+  PARSE-NAME I-LEXEME TOKEN-XT? IF EXIT THEN ?NF ( k*x ) -13 THROW
+;
+
+[THEN]
