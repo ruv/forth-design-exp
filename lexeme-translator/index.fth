@@ -1,13 +1,14 @@
 \ rvm 2018-08-09
 
 \ configure for SP-Forth
+: system-spforth ( -- flag )
+  S" FORTH-SYS" ENVIRONMENT? DUP 0= IF EXIT THEN DROP S" SP-FORTH" COMPARE 0=
+;
 :NONAME \ once init
-  S" FORTH-SYS" ENVIRONMENT? IF
-    S" SP-FORTH" COMPARE 0= IF
+  system-spforth IF
       S" [IF]" S" SFIND" EVALUATE IF DROP ELSE 2DROP
         S" lib/include/tools.f" INCLUDED
       THEN
-    THEN
   THEN
 ; EXECUTE
 
