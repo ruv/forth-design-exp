@@ -4,8 +4,8 @@
 :NONAME \ once init
   S" FORTH-SYS" ENVIRONMENT? IF
     S" SP-FORTH" COMPARE 0= IF
-      S" [IF]" SFIND IF DROP ELSE 2DROP
-        S" lib\include\tools.f" INCLUDED
+      S" [IF]" S" SFIND" EVALUATE IF DROP ELSE 2DROP
+        S" lib/include/tools.f" INCLUDED
       THEN
     THEN
   THEN
