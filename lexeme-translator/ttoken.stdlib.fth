@@ -105,7 +105,6 @@ VARIABLE SL \ state of postponing level
   STATE-LEVEL
   0 =? IF NAME>INTERPRET  EXECUTE EXIT THEN
   1 =  IF NAME>COMPILE    EXECUTE EXIT THEN
-  DUP TT-LIT NAME>COMPILE TT-XT
-  \ NB: no need to keep nt before TT-LIT
+  NAME>COMPILE ( w xt ) >R TT-LIT R> TT-XT
 ;
 [THEN]
