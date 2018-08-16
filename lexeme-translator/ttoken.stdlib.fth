@@ -24,7 +24,7 @@ VARIABLE SL \ state of postponing level
   THEN
   DUP 0= IF EXIT THEN
   0 SL ! 1 = IF 0 EXIT THEN
-  -29 THROW \ "compiler nesting" error
+  -22 THROW \ "control structure mismatch"
 ;
 : INC-STATE ( -- )
   STATE-LEVEL
@@ -33,7 +33,7 @@ VARIABLE SL \ state of postponing level
 ;
 : DEC-STATE ( -- )
   STATE-LEVEL
-  DUP 0 = IF -14 THROW THEN \ "interpreting a compile-only word" just as the nearest code
+  DUP 0 = IF -22 THROW THEN \ "control structure mismatch"
   DUP 1 = IF [COMPILE] [ THEN
   1- SL !
 ;

@@ -25,7 +25,7 @@ CR .( # --- Example definitions for some standard words ) CR
 ;
 
 : '         ( " name" -- xt   )
-  PARSE-NAME I-LEXEME TOKEN-XT? IF EXIT THEN ?NF ( k*x ) -13 THROW
+  PARSE-NAME I-LEXEME TOKEN-XT? IF EXIT THEN ?NF ( k*x ) -32 THROW \ "invalid name argument"
 ;
 
 [THEN]
