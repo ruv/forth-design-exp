@@ -25,6 +25,7 @@ S" ./lib/kernel.compat.fth"               INCLUDED
 S" ./interpreter-kernel.basic.fth"        INCLUDED
 
 \ Level 2 - managing the interpreters
+S" ./lib/control-flow.fth"                INCLUDED
 S" ./lib/compiler.compat.fth"             INCLUDED
 S" ./lib/combinator.fth"                  INCLUDED
 S" ./interpreter-kernel.stdlib.fth"       INCLUDED

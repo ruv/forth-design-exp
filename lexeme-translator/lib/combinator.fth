@@ -1,13 +1,5 @@
 \ rvm 2018-08-09
 
-\ The words that create new definitions
-\ should not be executed in compile mode.
-\ Check STATE and throw exeption if it not zero.
-: ?STATE0 ( -- )
-  STATE @ IF -29 THROW THEN \ "compiler nesting"
-;
-
-
 \ Combinators
 
 \ Partial function application for one argument.

@@ -1,14 +1,5 @@
 \ rvm 2006, 2007, 2018-08-09
 
-\ A useful factor.
-\ Return control to the calling definition if the top value is not zero,
-\ otherwise drop the top value (that is zero).
-: ?ET ( 0 -- | x -- x ) \ Exit on True returning this true
-  POSTPONE DUP POSTPONE IF POSTPONE EXIT POSTPONE THEN POSTPONE DROP
-; IMMEDIATE
-
-
-
 \ Interpreters for the common literals
 \ (partial list)
 

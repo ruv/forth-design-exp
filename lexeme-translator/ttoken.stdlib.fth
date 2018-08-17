@@ -4,12 +4,6 @@
 
 \ The 'TT-' prefix stands for "token translator" (and also for "token-type")
 
-\ Useful factor
-: =? ( x1 x2 -- x1 false | true )
-  OVER = DUP IF NIP THEN
-;
-
-
 \ Managing postponing level.
 \ This general implementation just keeps sync with standard STATE variable.
 \ A native implementation should be far simpler.
