@@ -14,7 +14,8 @@
 ; EXECUTE
 
 system-spforth [IF] VERSION 100000 U/ 4 = [IF]
-  REQUIRE /STRING lib/include/string.f
+  REQUIRE ANSI-FILE     lib/include/ansi-file.f
+  REQUIRE /STRING       lib/include/string.f
 [THEN] [THEN]
 
 
@@ -41,5 +42,13 @@ S" ./interpreter.stdlib.fth"              INCLUDED
 
 
 
-\ Eexample definitions for some standard words
+\ Example definitions for some standard words
 S" ./core.example.fth"                    INCLUDED
+
+\ Example definitions for some well-known literals formats
+S" ./common.example.fth"                  INCLUDED
+
+\ Simple REPL
+: q
+  BEGIN ." q> " REFILL WHILE ." #> " TRANSLATE-SOURCE ."  -- S: " .S CR REPEAT
+;
