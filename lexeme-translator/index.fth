@@ -1,9 +1,10 @@
 \ rvm 2018-08-09
 
 \ configure for SP-Forth
-: system-spforth ( -- flag )
-  S" FORTH-SYS" ENVIRONMENT? DUP 0= IF EXIT THEN DROP S" SP-FORTH" COMPARE 0=
-;
+:NONAME ( -- flag )
+  CREATE  S" FORTH-SYS" ENVIRONMENT? DUP 0= IF , ELSE DROP S" SP-FORTH" COMPARE 0= , THEN  DOES> @
+; EXECUTE system-spforth
+
 :NONAME \ once init
   system-spforth IF
       S" [IF]" S" SFIND" EVALUATE IF DROP ELSE 2DROP
