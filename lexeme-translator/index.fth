@@ -46,6 +46,7 @@ S" ./interpreter.stdlib.fth"              INCLUDED
 S" ./core.example.fth"                    INCLUDED
 
 \ Example definitions for some well-known literals formats
+S" ./lib/wordlist.fth"                    INCLUDED
 S" ./common.example.fth"                  INCLUDED
 
 \ Simple REPL
