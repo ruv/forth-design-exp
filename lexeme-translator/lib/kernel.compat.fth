@@ -1,6 +1,10 @@
 
 \ Some well known words
 
+[UNDEFINED] 0! [IF]
+: 0! ( addr -- ) 0 SWAP ! ;
+[THEN]
+
 [UNDEFINED] 1+! [IF]
 : 1+! ( addr -- ) DUP @ 1+ SWAP ! ;
 [THEN]
