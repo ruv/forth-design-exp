@@ -7,15 +7,23 @@
 : I-NUM-DU ( c-addr u -- x x tt | c-addr u 0 )
   2DUP 0 0 2SWAP >NUMBER NIP IF 2DROP 0 EXIT THEN 2NIP ['] TT-2LIT
 ;
+\ double-cell number plain with optinal sign
+: I-NUM-D ( c-addr u -- x x tt | c-addr u 0 )
+  [CHAR] - MATCH-HEAD-CHAR >R
+  I-NUM-DU DUP IF R> IF >R DNEGATE R> THEN EXIT THEN
+  DROP R> IF -1 CHARS /STRING THEN  0
+;
+\ double-cell number with trailing dot and optinal sign
+: I-NUM-D-FORM-DOT ( c-addr u -- x x tt | c-addr u 0 )
+  [CHAR] . MATCH-TAIL-CHAR ?E0 I-NUM-D ?ET CHAR+ 0
+;
 \ single-cell number unsigned plain
 : I-NUM-U ( c-addr u -- x tt | c-addr u 0 )
   I-NUM-DU DUP IF 2DROP ['] TT-LIT THEN
 ;
-\ double-cell number unsigned with trailing dot
-: I-NUM-DU-FORM-DOT ( c-addr u -- x x tt | c-addr u 0 )
-  DUP 2 CHARS U< IF  0 EXIT THEN
-  2DUP + CHAR- C@ [CHAR] . =
-  IF  CHAR- I-NUM-DU ?ET CHAR+  THEN  0
+\ single-cell number with optinal sign
+: I-NUM ( c-addr u -- x tt | c-addr u 0 )
+  I-NUM-D DUP IF 2DROP ['] TT-LIT THEN
 ;
 
 [DEFINED] TT-FLIT   [IF]
@@ -70,8 +78,12 @@
 
 
 : I-NUMBER-ANY ( c-addr u -- i*x tt | c-addr u 0 )
-  I-NUM-DU-FORM-DOT  ?ET
-  I-NUM-U            ?ET
+  I-NUM-D-FORM-DOT   ?ET
+  I-NUM              ?ET
+
+  [DEFINED] I-FLOAT-FORM-E  [IF]
+  I-FLOAT-FORM-E     ?ET    [THEN]
+
   FALSE
 ;
 

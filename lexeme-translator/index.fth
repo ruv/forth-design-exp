@@ -13,6 +13,10 @@
   THEN
 ; EXECUTE
 
+system-spforth [IF] VERSION 100000 U/ 4 = [IF]
+  REQUIRE /STRING lib/include/string.f
+[THEN] [THEN]
+
 
 
 \ Some well known words
@@ -32,6 +36,7 @@ S" ./interpreter-kernel.stdlib.fth"       INCLUDED
 
 \ Level 3 - standard library
 S" ./ttoken.stdlib.fth"                   INCLUDED
+S" ./lib/string-match.fth"                INCLUDED
 S" ./interpreter.stdlib.fth"              INCLUDED
 
 
