@@ -19,7 +19,7 @@
   [CHAR] " MATCH-HEAD-CHAR ?E0
   [CHAR] " MATCH-TAIL-CHAR IF ['] TT-SLIT EXIT THEN
   DROP \ ensure that (c-addr) inside SOURCE
-  DUP SOURCE OVER + WITHIN 0= IF -11 THROW THEN \ "result out of range"
+  DUP  SOURCE DROP  DUP >IN @ + 1+  WITHIN 0= IF -11 THROW THEN \ "result out of range"
   [CHAR] " PARSE + OVER - ['] TT-SLIT
 ;
 
