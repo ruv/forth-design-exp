@@ -2,7 +2,7 @@
 
 \ configure for SP-Forth
 :NONAME ( -- flag )
-  CREATE  S" FORTH-SYS" ENVIRONMENT? DUP 0= IF , ELSE DROP S" SP-FORTH" COMPARE 0= , THEN  DOES> @
+  S" FORTH-SYS" ENVIRONMENT? DUP IF DROP S" SP-FORTH" COMPARE 0= THEN   CONSTANT
 ; EXECUTE system-spforth
 
 :NONAME \ once init
