@@ -1,22 +1,17 @@
 \ rvm 2018-08-09
 
-\ configure for SP-Forth
-:NONAME ( -- flag )
-  S" FORTH-SYS" ENVIRONMENT? DUP IF DROP S" SP-FORTH" COMPARE 0= THEN   CONSTANT
-; EXECUTE system-spforth
+\ configure for SP-Forth v4.*
+:NONAME ( -- flag-spforth-v4 flag-spforth )
+  S" FORTH-SYS" ENVIRONMENT? DUP IF DROP S" SP-FORTH" COMPARE 0= THEN
+  DUP IF S" VERSION" EVALUATE  100000 / 4 = ELSE 0 THEN  SWAP  \ NB: U/ is unstandard word
+; EXECUTE  CONSTANT system-spforth  CONSTANT system-spforth-v4
 
-:NONAME \ once init
-  system-spforth IF
-      S" [IF]" S" SFIND" EVALUATE IF DROP ELSE 2DROP
-        S" lib/include/tools.f" INCLUDED
-      THEN
-  THEN
-; EXECUTE
-
-system-spforth [IF] VERSION 100000 U/ 4 = [IF]
-  REQUIRE ANSI-FILE     lib/include/ansi-file.f
-  REQUIRE /STRING       lib/include/string.f
-[THEN] [THEN]
+system-spforth-v4 CHAR | AND PARSE | : REQUIRE-WORD REQUIRE ; REQUIRE-WORD [IF] lib/include/tools.f
+2DROP
+system-spforth-v4 [IF]
+  REQUIRE-WORD ANSI-FILE     lib/include/ansi-file.f
+  REQUIRE-WORD /STRING       lib/include/string.f
+[THEN]
 
 
 
