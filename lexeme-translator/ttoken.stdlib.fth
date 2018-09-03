@@ -65,17 +65,17 @@ VARIABLE SL \ state of postponing level
 : TT-FLIT   ( F: x -- x       | )   ['] FLIT,   TT-LITERAL-WITH ;
 [THEN]
 
-\ One interesting side effect of this approach is that an interpreter
+\ One interesting side effect of this approach is that a resolver
 \ for the new literals can return just a compiler for this literals
 \ and TT-LITERAL-WITH
 \ For example:
-\ I-NUM-TRIPLE-FORM ( addr u -- 3*x '3LIT, 'TT-LITERAL-WITH | addr u 0 )
+\ RESOLVE-3N ( addr u -- 3*x '3LIT, 'TT-LITERAL-WITH | addr u 0 )
 \ where "'3LIT," is defined as ": 3LIT, >R 2LIT, R> LIT, ;"
 \ and can be even a quotation.
 
 
 
-\ An interpreter has technical ability to do full translating of a lexeme by themself.
+\ A resolver has technical ability to do full translating of a lexeme by themself.
 \ Perhaps such usage should be specified and limited.
 \ In such case this designated "noop token" translator should be returned.
 : TT-NOOP ( -- ) ; \ it does nothing

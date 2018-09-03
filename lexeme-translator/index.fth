@@ -22,18 +22,18 @@ S" ./lib/kernel.compat.fth"               INCLUDED
 
 
 \ Level 1 (minimal level of supporting)
-S" ./interpreter-kernel.basic.fth"        INCLUDED
+S" ./resolver-kernel.basic.fth"           INCLUDED
 
-\ Level 2 - managing the interpreters
+\ Level 2 - managing the resolvers
 S" ./lib/control-flow.fth"                INCLUDED
 S" ./lib/compiler.compat.fth"             INCLUDED
 S" ./lib/combinator.fth"                  INCLUDED
-S" ./interpreter-kernel.stdlib.fth"       INCLUDED
+S" ./resolver-kernel.stdlib.fth"          INCLUDED
 
 \ Level 3 - standard library
 S" ./ttoken.stdlib.fth"                   INCLUDED
 S" ./lib/string-match.fth"                INCLUDED
-S" ./interpreter.stdlib.fth"              INCLUDED
+S" ./resolver.stdlib.fth"                 INCLUDED
 
 
 
@@ -49,8 +49,8 @@ S" ./common.example.fth"                  INCLUDED
 
 \ Simple REPL
 : (q)
-  SOURCE-ID IF BEGIN REFILL WHILE TRANSLATE-SOURCE REPEAT EXIT THEN
-  BEGIN ." q> " REFILL WHILE ." #> " TRANSLATE-SOURCE ."  -- S: " .S CR REPEAT
+  SOURCE-ID IF BEGIN REFILL WHILE TRANSLATE-SOURCE-SURELY REPEAT EXIT THEN
+  BEGIN ." q> " REFILL WHILE ." #> " TRANSLATE-SOURCE-SURELY ."  -- S: " .S CR REPEAT
 ;
 : q
   ['] (q) CATCH DUP IF SL 0! THEN THROW

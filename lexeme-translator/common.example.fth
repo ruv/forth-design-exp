@@ -3,19 +3,19 @@
 \ Let's use tick prefix to quote a single word.
 \ E.g. in place of ['] XXX inside definitons or ' XXX outside definitions
 \ just always use 'XXX
-: I-NATIVE-QUOTED ( c-addr u -- c-addr u 0 | xt tt-lit )
-  [CHAR] ' MATCH-HEAD-CHAR ?E0 I-NATIVE IF ['] TT-LIT EXIT THEN -1 CHARS /STRING  0
+: RESOLVE-NATIVE-QUOTED ( c-addr u -- c-addr u 0 | xt tt-lit )
+  [CHAR] ' MATCH-HEAD-CHAR ?E0 RESOLVE-NATIVE IF ['] TT-LIT EXIT THEN -1 CHARS /STRING  0
 ;
 
 \ Let's support character literals in form 'x'
-: I-CHAR-FORM-TICK ( c-addr u -- c-addr u 0 | xt tt-slit )
+: RESOLVE-CHAR-TICK ( c-addr u -- c-addr u 0 | xt tt-slit )
   DUP 3 CHARS = ?E0
   [CHAR] ' MATCH-TAIL-CHAR ?E0
   [CHAR] ' MATCH-HEAD-CHAR IF DROP C@ ['] TT-LIT EXIT THEN CHAR+ 0
 ;
 
 \ Let's support strings literals in form "abc def" (on single line, in SOURCE)
-: I-STRING-SOURCE ( c-addr u -- c-addr u 0 | xt tt-slit )
+: RESOLVE-STRING-SOURCE ( c-addr u -- c-addr u 0 | xt tt-slit )
   [CHAR] " MATCH-HEAD-CHAR ?E0
   [CHAR] " MATCH-TAIL-CHAR IF ['] TT-SLIT EXIT THEN
   DROP \ ensure that (c-addr) inside SOURCE
@@ -37,8 +37,8 @@ VARIABLE MARKUP
 \ - the default markup
 WORDLIST DUP CONSTANT DEFAULT-MARKUP MARKUP !
 
-\ Interpreter for the markup words
-: I-MAKRUP-IMMEDIATE ( c-addr u -- c-addr u 0 | tt-noop )
+\ Resolver for the markup words
+: RESOLVE-MAKRUP-IMMEDIATE ( c-addr u -- c-addr u 0 | tt-noop )
   MARKUP @ OBEY ?E0 ['] TT-NOOP
 ;
 
@@ -93,15 +93,15 @@ DROP-CURRENT
 \ To manage these words the MARKUP wordlist should be used.
 
 \ Markup words shell not be shadowed by any other words.
-\ So, let's put their interpreter into the head of chain.
-' I-MAKRUP-IMMEDIATE PREEMPT-INTERPRETER
+\ So, let's put their resolver into the head of chain.
+' RESOLVE-MAKRUP-IMMEDIATE PREEMPT-RESOLVER
 
 
 
 
-: I-LITERAL-COMMON
-  I-NATIVE-QUOTED       ?ET
-  I-CHAR-FORM-TICK      ?ET
-  I-STRING-SOURCE       ?ET
+: RESOLVE-LITERAL-COMMON
+  RESOLVE-NATIVE-QUOTED     ?ET
+  RESOLVE-CHAR-TICK         ?ET
+  RESOLVE-STRING-SOURCE     ?ET
   FALSE
-; ' I-LITERAL-COMMON ENQUEUE-INTERPRETER
+; ' RESOLVE-LITERAL-COMMON ENQUEUE-RESOLVER

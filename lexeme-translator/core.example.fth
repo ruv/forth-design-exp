@@ -1,15 +1,15 @@
 \ rvm 2018-08-09
 
-\ Definitons of some standard words via the lexeme interpreter mechanism
+\ Definitons of some standard words via the lexeme resolver mechanism
 
 \ Print a note to explain warnings regarding redefinitions
 CR .( # --- Example definitions for some standard words ) CR
 
 : S"        ( " name" -- i*x  )   [CHAR] " PARSE TT-SLIT ; IMMEDIATE
-: '         ( " name" -- xt   )   PARSE-NAME I-NATIVE ?NF  ;
-: [']       ( " name" -- xt | )   '                       TT-LIT ; IMMEDIATE
-: [COMPILE] ( " name" --      )   '                       TT-XT  ; IMMEDIATE
-: POSTPONE  ( " name" --      )   PARSE-NAME INC-STATE T-LEXEME DEC-STATE ?NF ; IMMEDIATE
+: '         ( " name" -- xt   )   PARSE-NAME RESOLVE-NATIVE ?NF  ;
+: [']       ( " name" -- xt | )   '    TT-LIT ; IMMEDIATE
+: [COMPILE] ( " name" --      )   '    TT-XT  ; IMMEDIATE
+: POSTPONE  ( " name" --      )   PARSE-NAME INC-STATE TRANSLATE-LEXEME DEC-STATE ?NF ; IMMEDIATE
 
 
 [DEFINED] TT-NT [IF]
@@ -25,7 +25,7 @@ CR .( # --- Example definitions for some standard words ) CR
 ;
 
 : '         ( " name" -- xt   )
-  PARSE-NAME I-LEXEME TOKEN-XT? IF EXIT THEN ?NF ( k*x ) -32 THROW \ "invalid name argument"
+  PARSE-NAME RESOLVE-LEXEME TOKEN-XT? IF EXIT THEN ?NF ( k*x ) -32 THROW \ "invalid name argument"
 ;
 
 [THEN]
