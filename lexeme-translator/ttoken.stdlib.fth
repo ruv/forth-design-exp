@@ -37,14 +37,15 @@ VARIABLE SL \ state of postponing level
 
 \ Standard tokens translators
 
+DEFER TT-LIT  ' TT-LIT
+
 \ "execution token" translator
 : TT-XT ( i*x xt -- j*x | i*x )
   STATE-LEVEL
   0 =? IF EXECUTE EXIT THEN
   1 =? IF COMPILE, EXIT THEN
   2 =? IF LIT,  ['] COMPILE, COMPILE, EXIT THEN
-  -29 THROW \ 	"compiler nesting" error
-  \ deeper nesting can be implemented via recursion or quotation
+  DROP DEC-STATE  TT-LIT  ['] COMPILE, RECURSE  INC-STATE
 ;
 
 \ helper for all literlas
@@ -53,9 +54,12 @@ VARIABLE SL \ state of postponing level
   0 =? IF DROP EXIT THEN
   1 =? IF EXECUTE EXIT THEN
   2 =? IF DUP >R EXECUTE R> COMPILE, EXIT THEN
-  -29 THROW \ 	"compiler nesting" error
-  \ deeper nesting can be implemented via recursion or quotation
+  DROP DEC-STATE  DUP >R RECURSE  R> TT-XT  INC-STATE
 ;
+
+\ NB: Now in these recursive definitions the cases 1 and 2 may be just removed
+\ without any functionality lost. They was left for performance optimization only.
+
 
 \ standard literals
 : TT-LIT    ( x     -- x      | )   ['] LIT,    TT-LITERAL-WITH ;
@@ -64,6 +68,9 @@ VARIABLE SL \ state of postponing level
 [DEFINED] FLIT, [IF]
 : TT-FLIT   ( F: x -- x       | )   ['] FLIT,   TT-LITERAL-WITH ;
 [THEN]
+
+( xt-defer-tt-lit ) ' TT-LIT SWAP DEFER!
+
 
 \ One interesting side effect of this approach is that a resolver
 \ for the new literals can return just a compiler for this literals

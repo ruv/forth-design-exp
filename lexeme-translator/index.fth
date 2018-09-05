@@ -11,6 +11,7 @@ system-spforth-v4 CHAR | AND PARSE | : REQUIRE-WORD REQUIRE ; REQUIRE-WORD [IF] 
 system-spforth-v4 [IF]
   REQUIRE-WORD ANSI-FILE     lib/include/ansi-file.f
   REQUIRE-WORD /STRING       lib/include/string.f
+  REQUIRE-WORD DEFER!        lib/include/defer.f
 [THEN]
 
 

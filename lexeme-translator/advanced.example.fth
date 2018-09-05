@@ -23,15 +23,15 @@ q \ (!!!) it will work to the end of this file
 DEFAULT-MARKUP PUSH-CURRENT
 
   : P{ ( -- )
-    STATE-LEVEL 1 <> -29 AND THROW \ "compiler nesting" \ we do not support another levels yet
-    POSTPONE{ ':NONAME EXECUTE-EFFECT N>R }POSTPONE
+    STATE-LEVEL 0= -14 AND THROW \ "interpreting a compile-only word" \ STATE0 is not supported yet
+    ':NONAME TT-LIT 'EXECUTE-EFFECT TT-XT 'N>R TT-XT
     INC-STATE
   ;
 
   : }P ( -- xt )
-    STATE-LEVEL 2 <> -22 AND THROW \ "control structure mismatch"
+    STATE-LEVEL 2 < -22 AND THROW \ "control structure mismatch"
     DEC-STATE
-    POSTPONE{ NR> DROP '; EXECUTE }POSTPONE
+    'NR> TT-XT 'DROP TT-XT '; TT-XT
   ;
 
 DROP-CURRENT
