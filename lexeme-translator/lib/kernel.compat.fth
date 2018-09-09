@@ -24,3 +24,24 @@
 [UNDEFINED] RDROP [IF]
 : RDROP ( R: x -- ) POSTPONE R> POSTPONE DROP ; IMMEDIATE
 [THEN]
+
+
+
+[UNDEFINED] DEFER! [IF]
+: DEFER! ( xt2 xt1 -- ) >BODY ! ;
+[THEN]
+
+
+[UNDEFINED] PARSE-NAME [IF]
+[DEFINED] PARSE-WORD [IF]
+: PARSE-NAME PARSE-WORD ;
+[ELSE]
+: PARSE-NAME ( -- addr u ) BL PARSE ;
+[THEN]
+[THEN]
+
+
+
+[UNDEFINED] ?STACK [IF] \ unstandard word
+: ?STACK ( -- ) DEPTH 0 < -4 AND THROW ; \ stack underflow
+[THEN]
