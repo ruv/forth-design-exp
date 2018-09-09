@@ -42,25 +42,16 @@ DEFER TT-LIT  ' TT-LIT
 \ "execution token" translator
 : TT-XT ( i*x xt -- j*x | i*x )
   STATE-LEVEL
-  0 =? IF EXECUTE EXIT THEN
-  1 =? IF COMPILE, EXIT THEN
-  2 =? IF LIT,  ['] COMPILE, COMPILE, EXIT THEN
-  DROP
+  0= IF EXECUTE EXIT THEN
   DEC-STATE  TT-LIT  ['] COMPILE, RECURSE  INC-STATE
 ;
 
 \ helper for all literlas
 : TT-LITERAL-WITH ( i*x xt -- i*x | )
   STATE-LEVEL
-  0 =? IF DROP EXIT THEN
-  1 =? IF EXECUTE EXIT THEN
-  2 =? IF DUP >R EXECUTE R> COMPILE, EXIT THEN
-  DROP
+  0= IF DROP EXIT THEN
   DEC-STATE  DUP >R RECURSE  R> TT-XT  INC-STATE
 ;
-
-\ NB: Now in these recursive definitions the cases 1 and 2 may be just removed
-\ without any functionality lost. They was left for performance optimization only.
 
 
 \ standard literals
