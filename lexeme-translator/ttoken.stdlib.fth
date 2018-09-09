@@ -45,7 +45,8 @@ DEFER TT-LIT  ' TT-LIT
   0 =? IF EXECUTE EXIT THEN
   1 =? IF COMPILE, EXIT THEN
   2 =? IF LIT,  ['] COMPILE, COMPILE, EXIT THEN
-  DROP DEC-STATE  TT-LIT  ['] COMPILE, RECURSE  INC-STATE
+  DROP
+  DEC-STATE  TT-LIT  ['] COMPILE, RECURSE  INC-STATE
 ;
 
 \ helper for all literlas
@@ -54,7 +55,8 @@ DEFER TT-LIT  ' TT-LIT
   0 =? IF DROP EXIT THEN
   1 =? IF EXECUTE EXIT THEN
   2 =? IF DUP >R EXECUTE R> COMPILE, EXIT THEN
-  DROP DEC-STATE  DUP >R RECURSE  R> TT-XT  INC-STATE
+  DROP
+  DEC-STATE  DUP >R RECURSE  R> TT-XT  INC-STATE
 ;
 
 \ NB: Now in these recursive definitions the cases 1 and 2 may be just removed
@@ -72,19 +74,11 @@ DEFER TT-LIT  ' TT-LIT
 ( xt-defer-tt-lit ) ' TT-LIT SWAP DEFER!
 
 
-\ One interesting side effect of this approach is that a resolver
-\ for the new literals can return just a compiler for this literals
-\ and TT-LITERAL-WITH
-\ For example:
-\ RESOLVE-3N ( addr u -- 3*x '3LIT, 'TT-LITERAL-WITH | addr u 0 )
-\ where "'3LIT," is defined as ": 3LIT, >R 2LIT, R> LIT, ;"
-\ and can be even a quotation.
-
 
 
 \ A resolver has technical ability to do full translating of a lexeme by themself.
 \ Perhaps such usage should be specified and limited.
-\ In such case this designated "noop token" translator should be returned.
+\ In such case this designated "noop token" translator shall be returned.
 : TT-NOOP ( -- ) ; \ it does nothing
 
 

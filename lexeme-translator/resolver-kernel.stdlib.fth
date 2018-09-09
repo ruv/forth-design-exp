@@ -1,6 +1,6 @@
 \ rvm 2018-08-09
 
-\ Methods to manage the resolvers
+\ Methods to manage the system resolvers
 
 \ Just one of the possible variant.
 
@@ -15,3 +15,10 @@
 
 
 \ #todo other methods
+(
+  Perhaps it will be useful to have several chains of the system resolvers:
+    - names in various forms, words and words quotations
+    - standard literals
+    - other literals
+    - markup
+)
