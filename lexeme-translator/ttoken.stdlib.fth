@@ -37,22 +37,32 @@ VARIABLE SL \ state of postponing level
 
 \ Standard tokens translators
 
-DEFER TT-LIT  ' TT-LIT
+\ See also some explenations in ../docs/ttoken.fth
 
-\ "execution token" translator
-: TT-XT ( i*x xt -- j*x | i*x )
-  STATE-LEVEL
-  0= IF EXECUTE EXIT THEN
-  DEC-STATE  TT-LIT  ['] COMPILE, RECURSE  INC-STATE
+
+DEFER TTS-LIT ' TTS-LIT ( xt-defer-tts-lit )
+
+\ translate an "execution token" with given level
+: TTS-XT ( i*x xt s -- i*x | j*x )
+  0 =? IF EXECUTE EXIT THEN
+  1- DUP >R TTS-LIT  ['] COMPILE, R> RECURSE
 ;
 
 \ helper for all literlas
-: TT-LITERAL-WITH ( i*x xt -- i*x | )
-  STATE-LEVEL
-  0= IF DROP EXIT THEN
-  DEC-STATE  DUP >R RECURSE  R> TT-XT  INC-STATE
+: TTS-LITERAL-WITH ( x xt s -- x | )
+  0 =? IF DROP EXIT THEN
+  1- 2DUP 2>R RECURSE  2R> TTS-XT
 ;
+: TTS-LIT ( x s -- x | ) ['] LIT, SWAP TTS-LITERAL-WITH ;
 
+( xt-defer-tts-lit ) ' TTS-LIT SWAP DEFER!
+
+
+\ "execution token" translator
+: TT-XT ( i*x xt -- j*x | i*x ) STATE-LEVEL TTS-XT ;
+
+\ helper for all literlas
+: TT-LITERAL-WITH ( i*x xt -- i*x | ) STATE-LEVEL TTS-LITERAL-WITH ;
 
 \ standard literals
 : TT-LIT    ( x     -- x      | )   ['] LIT,    TT-LITERAL-WITH ;
@@ -61,8 +71,6 @@ DEFER TT-LIT  ' TT-LIT
 [DEFINED] FLIT, [IF]
 : TT-FLIT   ( F: x -- x       | )   ['] FLIT,   TT-LITERAL-WITH ;
 [THEN]
-
-( xt-defer-tt-lit ) ' TT-LIT SWAP DEFER!
 
 
 
