@@ -23,13 +23,13 @@ S" ./lib/kernel.compat.fth"               INCLUDED
 
 
 \ Level 1 (minimal level of supporting)
-S" ./resolver-kernel.basic.fth"           INCLUDED
+S" ./resolver.api.L1.fth"                 INCLUDED
 
 \ Level 2 - managing the resolvers
 S" ./lib/control-flow.fth"                INCLUDED
 S" ./lib/compiler.compat.fth"             INCLUDED
 S" ./lib/combinator.fth"                  INCLUDED
-S" ./resolver-kernel.stdlib.fth"          INCLUDED
+S" ./resolver.api.L2.fth"                 INCLUDED
 
 \ Level 3 - standard library
 S" ./ttoken.stdlib.fth"                   INCLUDED
