@@ -7,6 +7,11 @@
   [CHAR] ' MATCH-HEAD-CHAR ?E0 RESOLVE-NATIVE IF ['] TT-LIT EXIT THEN -1 CHARS /STRING  0
 ;
 
+\ Let's support single lexeme string in form `abc
+: RESOLVE-SLIT-SHORT ( c-addr u -- c-addr u 0 | xt tt-slit )
+  DUP 1 CHARS > ?E0  [CHAR] ` MATCH-HEAD-CHAR ?E0  ['] TT-SLIT
+;
+
 \ Let's support character literals in form 'x'
 : RESOLVE-CHAR-TICK ( c-addr u -- c-addr u 0 | xt tt-slit )
   DUP 3 CHARS = ?E0
@@ -101,6 +106,7 @@ DROP-CURRENT
 
 : RESOLVE-LITERAL-COMMON
   RESOLVE-NATIVE-QUOTED     ?ET
+  RESOLVE-SLIT-SHORT        ?ET
   RESOLVE-CHAR-TICK         ?ET
   RESOLVE-STRING-SOURCE     ?ET
   FALSE
