@@ -33,6 +33,11 @@ VARIABLE CURRENT-RESOLVER \ current lexeme resolver
 \ - to be aligned with naming convention of GET-CURRENT and SET-CURRENT words.
 
 
+\ A resolver has technical ability to do full translating of a lexeme by themself.
+\ In such case this designated "noop token" translator shall be returned.
+: TT-NOOP ( -- ) ; \ it does nothing
+
+
 \ Top-level lexeme resolver.
 \ Resolve lexeme and return token ( k*x ) and xt of corresponding token translator,
 \ or unchanged lexeme and false.
