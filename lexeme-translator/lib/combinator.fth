@@ -30,3 +30,12 @@
 : COMBINE-EITHER-MAYBE ( i*x xt1|0 xt2|0 -- j*x flag )
   >R EXECUTE-MAYBE DUP IF RDROP EXIT THEN DROP R> EXECUTE-MAYBE
 ;
+
+
+\ Combinator.
+\ Take xt; save copy of the two top values; execute xt; if it retuns zero
+\ then put the saved values into the place of the two undertop values and exit;
+\ otherwise discard the saved values.
+: ?KEEP2 ( i*x 2*x xt -- j*x 2*x 0 | j*x true ) \ xt ( i*x 2*x -- j*x 2*y 0 | j*x true )
+  2 PICK 2 PICK 2>R EXECUTE DUP IF RDROP RDROP EXIT THEN DROP 2DROP 2R> 0
+;
