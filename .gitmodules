@@ -1,0 +1,3 @@
+[submodule "docs/charm"]
+	path = docs/charm
+	url = https://github.com/ruv/charm.git
