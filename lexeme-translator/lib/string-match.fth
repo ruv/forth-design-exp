@@ -60,3 +60,23 @@
 : SUBSTRING-BEFORE ( a u a-key u-key -- a2 u2 )
   3 PICK >R  SEARCH  IF  DROP R> TUCK - EXIT THEN   RDROP 2DROP 0 0
 ;
+
+
+
+: SPLIT- ( a u a-key u-key -- a-right u-right a-left u-left true | a u false )
+  3 PICK >R DUP >R      ( R: a u1 )
+  SEARCH    IF          ( aa uu )
+  OVER R@ + SWAP R> -   ( aa aa+u1  uu-u1     ) \ the right part
+  ROT R@ - R> SWAP      ( aa+u1 uu-u1  a aa-a ) \ the left part
+  TRUE EXIT THEN
+  2R> 2DROP FALSE
+;
+
+: SPLIT ( a u a-key u-key -- a-left u-left a-right u-right true | a u false )
+  DUP >R 3 PICK >R      ( R: u1 a )
+  SEARCH    IF          ( aa uu )
+  SWAP R@ OVER R> -     ( uu aa  a aa-a       ) \ the left part
+  2SWAP R@ + SWAP R> -  ( a aa-a  aa+u1 uu-u1 ) \ the right part
+  TRUE EXIT THEN
+  2R> 2DROP FALSE
+;
