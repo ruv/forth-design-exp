@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="/charm/default.xsl" type="text/xsl" ?>
+<!DOCTYPE div [ <!ENTITY gh "https://github.com/ruv/forth-design-exp/"> ]>
+<div class="content" title="Resolver vs Recognizer — API comparison" xmlns="http://www.w3.org/1999/xhtml">
+  <link rel="stylesheet" href="/charm/comparison-table.css"/>
+  <p>
+    Let's imagine that we want to implement arithmetic fractions calculus.
+    And we need to support the simple fraction expressions
+    in form <b>aaa/bbb</b> (e.g. <b>355/113</b> ), where
+    <b>aaa</b> is a double-cell number,
+    <b>bbb</b> is a single-cell number.
+    A fraction token is represented as <b>( d-numerator u-denominator )</b> pair.
+  </p>
+  <p>
+    Let's consider how it can look like in the both APIs.
+  </p>
+
+  <table class="compar">
+    <clogroup>
+      <col/>
+      <col/>
+    </clogroup>
+    <tr>
+      <th><h2><a href="http://amforth.sourceforge.net/Recognizers.html">Recognizer RFD v4</a></h2></th>
+      <th><h2><a href="&gh;blob/master/docs/resolver-api.md">Resolver RFD v1</a></h2></th>
+    </tr>
+    <tr>
+      <td><h3>Define a <i>rectype</i></h3></td>
+      <td><h3>Define a <i>token translator</i></h3></td>
+    </tr>
+    <tr>
+      <td>
+'NOOP :NONAME ( 3*x -- ) >R 2LIT, R> LIT, ;
+DUP RECTYPE: RECTYPE-3LIT
+
+\ NB: It can not be anonymous
+      </td>
+      <td>
+: TT-3LIT ( 3*x -- 3*x | ) >R TT-2LIT  R> TT-LIT ;
+
+\ NB: It can be anonymous, or even a quotation
+      </td>
+    </tr>
+    <tr>
+      <td><h3>Define a <i>lexeme recognizer</i></h3></td>
+      <td><h3>Define a <i>lexeme resolver</i></h3></td>
+    </tr>
+    <tr>
+      <td>
+: REC-FRAC ( c-addr u -- 3*x rectype | rectype-null )
+  `/ SPLIT  0= IF 2DROP RECTYPE-NULL EXIT THEN 2>R
+  REC-DNUM DUP RECTYPE-NULL = IF 2R> 2DROP EXIT THEN
+  DROP 2R> REC-NUM DUP RECTYPE-NULL = IF
+  ( d1 rt ) NIP NIP EXIT THEN DROP RECTYPE-3LIT
+;
+      </td>
+      <td>
+: RESOLVE-FRAC ( c-addr u -- 3*x tt | c-addr u 0 )
+  `/ SPLIT ?E0 2>R OVER >R ( R: d-txt-right c-addr )
+  RESOLVE-DN IF R> 2R> RESOLVE-N IF NIP 'TT-3LIT EXIT THEN
+  ELSE R> 2R> THEN + OVER - 2NIP 0
+;
+      </td>
+    </tr>
+    <tr>
+      <td>A variant with <b>0</b> in place of <b>RECTYPE-NULL</b> </td>
+      <td>A variant with using <b>?KEEP2</b>
+      <a href="&gh;blob/master/lexeme-translator/lib/combinator.fth">combinator</a>
+      and quotation</td>
+    </tr>
+    <tr>
+      <td>
+: REC-FRAC ( c-addr u -- 3*x rectype | 0 )
+  `/ SPLIT IF 2>R
+  REC-DNUM IF 2R> REC-NUM IF RECTYPE-3LIT EXIT THEN
+  ( d1 ) 2DROP 0 EXIT THEN 2R> THEN 2DROP 0
+;
+
+\ NB: actually we need here a recognizer for a plain
+\ signed double number (without dot),
+\ REC-DNUM does not fit good.
+      </td>
+      <td>
+: RESOLVE-FRAC ( c-addr u -- 3*x tt | c-addr u 0 )
+  [: `/ SPLIT ?E0 2>R
+  RESOLVE-DN IF 2R> RESOLVE-N IF 'TT-3LIT EXIT THEN
+  2NIP 0 EXIT THEN 2R> 2DROP 0 ;] ?KEEP2
+;
+
+\ NB: this RESOLVE-DN <a href="&gh;/blob/master/lexeme-translator/resolver.stdlib.fth">resolver</a> resolves
+\ a plain signed double number (without dot)
+      </td>
+    </tr>
+    <tr>
+      <td><h3>Create a recognizer chain</h3></td>
+      <td><h3>Create a resolver chain</h3></td>
+    </tr>
+    <tr>
+      <td>
+2 NEW-RECOGNIZER-SEQUENCE CONSTANT RECSEQ-LEXICON-FRAC
+'REC-NT 'REC-FRAC 2 RECSEQ-LEXICON-FRAC SET-RECOGNIZER
+
+: REC-LEXICON-FRAC RECSEQ-LEXICON-FRAC RECOGNIZE ;
+      </td>
+      <td>
+: RESOLVE-LEXICON-FRAC RESOLVE-NATIVE ?ET RESOLVE-FRAC ;
+      </td>
+    </tr>
+    <tr>
+      <td><h3>Manage system recognizers via the proposed API</h3></td>
+      <td><h3>Manage system resolvers via the proposed API</h3></td>
+    </tr>
+    <tr/><!-- empty code section -->
+    <tr>
+      <td><h4>Temporary add a recognizer into <strong>the tail</strong> of the system recognizer chain</h4></td>
+      <td><h4>Temporary add a resolver into <strong>the tail</strong> of the system resolver chain</h4></td>
+    </tr>
+    <tr>
+      <td>
+'REC-FRAC FORTH-RECOGNIZER GET-RECOGNIZER
+1+ FORTH-RECOGNIZER SET-RECOGNIZER
+
+\ ...
+
+\ Restore the system recognizer
+FORTH-RECOGNIZER GET-RECOGNIZER 1-
+FORTH-RECOGNIZER SET-RECOGNIZER DROP
+      </td>
+      <td>
+RESOLVER ( xt-previous-resolver )
+'RESOLVE-FRAC ENQUEUE-RESOLVER
+
+\ ...
+
+\ Restore the system resolver
+( xt-previous-resolver ) SET-RESOLVER
+      </td>
+    </tr>
+    <tr>
+      <td><h4>Temporary add a recognizer into <strong>the head</strong> of the system recognizer chain</h4></td>
+      <td><h4>Temporary add a resolver into <strong>the head</strong> of the system resolver chain</h4></td>
+    </tr>
+    <tr>
+      <td>
+FORTH-RECOGNIZER GET-RECOGNIZER
+'REC-LEXICON-FRAC SWAP 1+
+FORTH-RECOGNIZER SET-RECOGNIZER
+
+\ ...
+
+\ Restore the system recognizer
+FORTH-RECOGNIZER GET-RECOGNIZER NIP 1-
+FORTH-RECOGNIZER SET-RECOGNIZER
+      </td>
+      <td>
+RESOLVER ( xt-previous-resolver )
+'RESOLVE-LEXICON-FRAC PREEMPT-RESOLVER
+
+\ ...
+
+\ Restore the system resolver
+( xt-previous-resolver ) SET-RESOLVER
+      </td>
+    </tr>
+
+    <tr>
+      <td><h4>Temporary replace the system recognizer chain</h4></td>
+      <td><h4>Temporary replace the system resolver chain</h4></td>
+    </tr>
+    <tr>
+      <td>
+FORTH-RECOGNIZER GET-RECOGNIZER
+RECSEQ-LEXICON-FRAC GET-RECOGNIZER
+FORTH-RECOGNIZER SET-RECOGNIZER
+( i*x i )
+
+\ ...
+
+\ Restore the system recognizer
+( i*x i ) FORTH-RECOGNIZER SET-RECOGNIZER
+      </td>
+      <td>
+RESOLVER ( xt-previous-resolver )
+'RESOLVE-LEXICON-FRAC SET-RESOLVER
+
+\ ...
+
+\ Restore the system resolver
+( xt-previous-resolver ) SET-RESOLVER
+      </td>
+    </tr>
+    <tr>
+      <td><h4>Call the current system reconizer chain</h4></td>
+      <td><h4>Call the current system resolver chain</h4></td>
+    </tr>
+    <tr>
+      <td>
+FORTH-RECOGNIZER RECOGNIZE ( c-addr u -- k*x rectype | rectype-null )
+      </td>
+      <td>
+RESOLVE-LEXEME ( c-addr u -- k*x xt-tt | c-addr u 0 )
+      </td>
+    </tr>
+    <tr>
+      <td><h3>Define own modes</h3>
+        <p>Translate the tokens in user-defined mode.</p>
+      </td>
+      <td><h3>Define own modes</h3>
+        <p>Translate the tokens in user-defined mode. For example, to support macro.</p>
+      </td>
+    </tr>
+    <tr>
+      <td>\ Impossible. </td>
+      <td>\ See <a href="&gh;blob/master/lexeme-translator/common.example.fth"
+>the example</a> of defining <i>markup</i> words
+\ to manage the new state, that affects translation
+\ in the own resolver chain
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <h2>Disadvantages</h2>
+        <ul>
+          <li><i>Rectype</i> can not be anonymous, a non-parsing word is not proposed.</li>
+          <li><i>Rectype</i> interface does
+            not allow to have the <strong>user-defined modes</strong>.
+          </li>
+          <li><b>RECTYPE-NULL</b> slightly decreases complexity in one place
+            (in the text interpreter <b>INTERPRET</b>
+            and its counterpart <b>POSTPONE</b>)
+            but increase complexity in many places
+            — it superimposes unnecessary complication into the level of usage.
+          </li>
+          <li><i>Recognizer sequence</i> API is awkward in usage (see examples above).</li>
+          <li>Managing of the system recongizers is overcomplicated.
+            And it is inconsistant:
+            to add recognizer into the system chain the one entity is used
+            (<i>recognizer</i> itself),
+            but to replace the system chain — another entity is used
+            (<i>recognizer sequence</i>).
+          </li>
+          <li>Nothing naming convention is proposed for <i>recognizer sequence</i> instances.</li>
+          <li>Naming convention for GET-RECOGNIZER and SET-RECOGNIZER
+            (that take object on the stack)
+            conflicts with such standard words like GET-ORDER and SET-ORDER
+            (that work with the system object).
+          </li>
+        </ul>
+        <h2>Advantages</h2>
+        <ul>
+          <li>Due to the stack effect for recognizers, sometimes
+            a recognizer definition can be slightly shorter
+            than the corresponding resolver definition.
+          </li>
+        </ul>
+      </td>
+      <td>
+        <h2>Disadvantages</h2>
+        <ul>
+          <li>System can not introspect a user-defined resolver chain
+            (it is applied to Reconizer API as well).
+            Although a special API can be designed for this purpose,
+            a user is free to not use such API and compose a chain by its own.
+          </li>
+          <li>Sometimes a definition of a resolver can be slightly longer
+            than a definition of the corresponding recognizer
+            due to the difference in the stack effect.
+          </li>
+        </ul>
+        <h2>Advantages</h2>
+        <ul>
+          <li>
+            A <i>token translator</i> is a useful word
+            and an opaque <i>token type</i> <strong>id</strong> at the same time.
+          </li>
+          <li>
+            A <i>token translator</i> as <i>xt</i> (execution token)
+            is far more flexible than just <i>rectype</i> id.
+            It allows to have <strong>user-defined modes for text translation</strong>.
+          </li>
+          <li>Since lexeme resolvers retun original lexeme on fail,
+            they can be be easy chained.
+            <br/>
+            An alternative to the recognizer sequence mechanism can be implemented as well,
+            but it is not necessary.
+          </li>
+          <li>Less words for standartization and shorter specification.
+            No need any new data types (like <i>data type id</i>).
+          </li>
+          <li>A Forth system implementer can choose what level of supporting to provide,
+            and the minimal level is quite simple and short.
+          </li>
+        </ul>
+      </td>
+      <!-- tr*2>td*2 -->
+    </tr>
+  </table>
+
+  <h2>Conclusion</h2>
+  <p>Actually, these APIs can be implemented via each other, but Resolver API provides more basic approach.</p>
+  <p>The proposed Resolver API looks far better and more promising.</p>
+
+</div>

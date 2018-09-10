@@ -17,3 +17,8 @@ file | description
 
  - [ttoken.fth](../docs/ttoken.fth) — an explanation regarding the token translators (definition variants).
  - [resolver-api.md](../docs/resolver-api.md) — a formal specification.
+
+
+### See also
+
+ - [resolver-vs-recognizer](https://ruv.github.io/forth-design-exp/resolver-vs-recognizer.xml) — a comparison with Recognizer RFD v4.

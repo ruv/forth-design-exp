@@ -123,3 +123,5 @@ that is a pair of "execution token" and immediacy flag.
 
 Proof of concept implementation is available
 at [GitHub](https://github.com/ruv/forth-design-exp/tree/master/lexeme-translator)
+
+[Comparison](https://ruv.github.io/forth-design-exp/resolver-vs-recognizer.xml) with Recognizer RFD v4.
