@@ -11,3 +11,9 @@ file | description
 [common.example.fth](common.example.fth)            | Support for some well known lexeme types and markup example.
 [advanced.example.fth](advanced.example.fth)        | More elaborate technique examples.
 [index.fth](index.fth)                              | Index file to load all at once.
+
+
+### In [../docs](../../../tree/master/docs) directory
+
+ - [ttoken.fth](../docs/ttoken.fth) — an explanation regarding the token translators (definition variants).
+ - [resolver-api.md](../docs/resolver-api.md) — a formal specification.
