@@ -7,13 +7,13 @@
 : RESOLVE-DUN ( c-addr u -- x x tt | c-addr u 0 )
   2DUP 0 0 2SWAP >NUMBER NIP IF 2DROP 0 EXIT THEN 2NIP ['] TT-2LIT
 ;
-\ double-cell number plain with optinal sign
+\ double-cell number plain with optional sign
 : RESOLVE-DN ( c-addr u -- x x tt | c-addr u 0 )
   [CHAR] - MATCH-HEAD-CHAR >R
   RESOLVE-DUN DUP IF R> IF >R DNEGATE R> THEN EXIT THEN
   DROP R> IF -1 CHARS /STRING THEN  0
 ;
-\ double-cell number with trailing dot and optinal sign
+\ double-cell number with trailing dot and optional sign
 : RESOLVE-DN-DOT ( c-addr u -- x x tt | c-addr u 0 )
   [CHAR] . MATCH-TAIL-CHAR ?E0 RESOLVE-DN ?ET CHAR+ 0
 ;
@@ -21,7 +21,7 @@
 : RESOLVE-UN ( c-addr u -- x tt | c-addr u 0 )
   RESOLVE-DUN DUP IF 2DROP ['] TT-LIT THEN
 ;
-\ single-cell number with optinal sign
+\ single-cell number with optional sign
 : RESOLVE-N ( c-addr u -- x tt | c-addr u 0 )
   RESOLVE-DN DUP IF 2DROP ['] TT-LIT THEN
 ;

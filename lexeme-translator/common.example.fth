@@ -93,12 +93,12 @@ DEFAULT-MARKUP PUSH-CURRENT
 DROP-CURRENT
 
 
-\ The markup words can not be "ticket" or postponed in usual way.
-\ They work but absent in the search order context.
+\ The markup words can not be "ticked" or postponed in usual way.
+\ They work but they are absent in the search order context.
 \ To manage these words the MARKUP wordlist should be used.
 
-\ Markup words shell not be shadowed by any other words.
-\ So, let's put their resolver into the head of chain.
+\ To give priority to the markup words,
+\ let's put their resolver into the head of chain.
 ' RESOLVE-MAKRUP-IMMEDIATE PREEMPT-RESOLVER
 
 
