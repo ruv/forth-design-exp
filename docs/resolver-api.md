@@ -85,6 +85,10 @@ Translate a "name token" according to the current state.
 `TT-WORD ( i*x xt imm-flag -- j*x )` <br/>
 Translate a "word token" `(xt -1|0)` according to the current state.
 
+`TT-LITERAL-WITH ( k*x xt -- k*x | ) ( F: m*r -- m*r | ) \ xt ( k*x --  F: m*r -- ) ` <br/>
+Translate a literal token `( S: k*x ) ( F: m*r )` according to the current state
+using the compilation word represented by `xt`.
+
 
 ### Lexeme resolvers (optional)
 
