@@ -28,9 +28,9 @@ This `flag` is the flag of successful for item (d).
 
 For that the system shall also represent its original (b) and (c) parts
 of the text interpreter as a separate definition (__t__) with the stack effect
-`( c-addr u -- k*x xt-tt | addr u 0 )`,
-where `xt-tt` has stack effect `( i*x k*x -- j*x )`.<br/>
-In the case of _k_ is 0, `xt-tt` shall be equal to the xt of `TT-NOOP` word.
+`( c-addr u -- k*x xt-tt | addr u 0 ) ( F: -- m*r )`,
+where `xt-tt` has the stack effect `( i*x k*x -- j*x ) ( F: l*r m*r -- n*r )`.<br/>
+In the case of _k+m_ is 0, `xt-tt` shall be equal to the xt of `TT-NOOP` word.
 Otherwise `xt-tt` may represent the semantics of (b.1-2) or (c.1-2) items
 of the text interpreter depending on the returned values.
 
@@ -51,12 +51,12 @@ Add resolver xt into the tail of the system resolver chain.
 Add resolver xt into the head of the system resolver chain.
 
 
-`RESOLVE-LEXEME ( c-addr u -- k*x xt-tt | c-addr u 0 )` <br/>
+`RESOLVE-LEXEME ( c-addr u -- k*x xt-tt | c-addr u 0 ) ( F: -- m*r ) ` <br/>
 Try to resolve a lexeme (c-addr u) using the current system resolver.
 On success return the token (k*x) and the token translator xt-tt,
 on fail return (c-addr u) and 0.
 
-`TRANSLATE-LEXEME ( i*x c-addr u -- j*x true | c-addr u 0 )` <br/>
+`TRANSLATE-LEXEME ( i*x c-addr u -- j*x true | c-addr u 0 ) ( F: l*r -- n*r )` <br/>
 The execution semantics of this word is `RESOLVE-LEXEME DUP IF EXECUTE TRUE THEN`
 
 
