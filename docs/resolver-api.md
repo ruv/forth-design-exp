@@ -38,7 +38,8 @@ The xt of this definition (__t__) shall be return by `RESOLVER` word
 before the first call of `SET-RESOLVER` word.
 
 
-## API Level 2
+
+## API Level 2 (managing the system resolver chain)
 
 For the generality, further _resolver_ term means _lexeme resolver chain_
 if other is not stated.
@@ -51,6 +52,12 @@ Add resolver xt into the tail of the system resolver chain.
 Add resolver xt into the head of the system resolver chain.
 
 
+
+## API Level 3 (standard library)
+
+
+### Lexeme translator
+
 `RESOLVE-LEXEME ( c-addr u -- k*x xt-tt | c-addr u 0 ) ( F: -- m*r ) ` <br/>
 Try to resolve a lexeme (c-addr u) using the current system resolver.
 On success return the token (k*x) and the token translator xt-tt,
@@ -59,8 +66,6 @@ on fail return (c-addr u) and 0.
 `TRANSLATE-LEXEME ( i*x c-addr u -- j*x true | c-addr u 0 ) ( F: l*r -- n*r )` <br/>
 The execution semantics of this word is `RESOLVE-LEXEME DUP IF EXECUTE TRUE THEN`
 
-
-## API Level 3 (standard library)
 
 ### Token translators (optional)
 
