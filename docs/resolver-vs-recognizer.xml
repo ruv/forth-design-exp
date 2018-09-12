@@ -127,13 +127,12 @@ FORTH-RECOGNIZER GET-RECOGNIZER 1-
 FORTH-RECOGNIZER SET-RECOGNIZER DROP
       </td>
       <td>
-RESOLVER ( xt-previous-resolver )
 'RESOLVE-FRAC ENQUEUE-RESOLVER
 
 \ ...
 
 \ Restore the system resolver
-( xt-previous-resolver ) SET-RESOLVER
+UNDO-RESOLVER
       </td>
     </tr>
     <tr>
@@ -153,13 +152,12 @@ FORTH-RECOGNIZER GET-RECOGNIZER NIP 1-
 FORTH-RECOGNIZER SET-RECOGNIZER
       </td>
       <td>
-RESOLVER ( xt-previous-resolver )
 'RESOLVE-LEXICON-FRAC PREEMPT-RESOLVER
 
 \ ...
 
 \ Restore the system resolver
-( xt-previous-resolver ) SET-RESOLVER
+UNDO-RESOLVER
       </td>
     </tr>
 

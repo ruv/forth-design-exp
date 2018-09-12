@@ -44,12 +44,22 @@ before the first call of `SET-RESOLVER` word.
 For the generality, further _resolver_ term means _lexeme resolver chain_
 if other is not stated.
 
+This API is a subject for elaborating.
 
 `ENQUEUE-RESOLVER ( xt -- )` <br/>
 Add resolver xt into the tail of the system resolver chain.
+After that the subsequent call of __RESOLVER__ word may return different value.
+__ENQUEUE-RESOLVER__ word may allot data space and create a definition.
 
 `PREEMPT-RESOLVER ( xt -- )` <br/>
 Add resolver xt into the head of the system resolver chain.
+After that the subsequent call of __RESOLVER__ word may return different value.
+__PREEMPT-RESOLVER__ word may allot data space and create a definition.
+
+`UNDO-RESOLVER ( -- )` <br/>
+Remove the latest added xt from the system resolver chain.
+After that the subsequent call of __RESOLVER__ word may return different value.
+An ambiguous condition exists if there is no such xt.
 
 
 
