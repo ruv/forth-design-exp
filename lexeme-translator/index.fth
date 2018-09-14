@@ -12,6 +12,7 @@ system-spforth-v4 [IF]
   REQUIRE-WORD ANSI-FILE     lib/include/ansi-file.f
   REQUIRE-WORD /STRING       lib/include/string.f
   REQUIRE-WORD DEFER!        lib/include/defer.f
+  REQUIRE-WORD NAME>COMPILE  lib/include/wordlist-tools.f
 [THEN]
 
 

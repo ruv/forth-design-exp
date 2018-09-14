@@ -11,6 +11,7 @@ file | description
 [common.example.fth](common.example.fth)            | Support for some well known lexeme types and markup example.
 [advanced.example.fth](advanced.example.fth)        | More elaborate technique examples.
 [index.fth](index.fth)                              | Index file to load all at once.
+[variation/](../../../tree/master/lexeme-translator/variation)      | Other implementation variants that conform to the proposed specification.
 
 
 ### In [../docs](../../../tree/master/docs) directory
