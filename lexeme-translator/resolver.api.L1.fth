@@ -52,7 +52,7 @@ VARIABLE CURRENT-RESOLVER \ current lexeme resolver
 : TRANSLATE-LEXEME ( i*x c-addr u -- j*x true | c-addr u 0 )
   RESOLVE-LEXEME DUP IF EXECUTE TRUE THEN
 ;
-
+\ NB: TRANSLATE-TOKEN is just EXECUTE
 
 
 
