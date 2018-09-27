@@ -64,7 +64,7 @@ DUP RECTYPE: RECTYPE-3LIT
     </tr>
     <tr>
       <td>A variant with <b>0</b> in place of <b>RECTYPE-NULL</b> </td>
-      <td>A variant with using <b>?KEEP2</b>
+      <td>A variant with using <b>?RETAIN2</b>
       <a href="&gh;blob/master/lexeme-translator/lib/combinator.fth">combinator</a>
       and quotation</td>
     </tr>
@@ -84,7 +84,7 @@ DUP RECTYPE: RECTYPE-3LIT
 : RESOLVE-FRAC ( c-addr u -- 3*x tt | c-addr u 0 )
   [: `/ SPLIT ?E0 2>R
   RESOLVE-DN IF 2R> RESOLVE-N IF 'TT-3LIT EXIT THEN
-  2NIP 0 EXIT THEN 2R> 2DROP 0 ;] ?KEEP2
+  2NIP 0 EXIT THEN 2R> 2DROP 0 ;] ?RETAIN2
 ;
 
 \ NB: this RESOLVE-DN <a href="&gh;/blob/master/lexeme-translator/resolver.stdlib.fth">resolver</a> resolves
