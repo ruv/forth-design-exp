@@ -11,12 +11,12 @@
 
 
 
+q \ (!!!) it will work to the end of this file
+\ NB: don't cross [IF] ... [THEN]
 
 [DEFINED] N>R [IF]
 
 \ Let's define one cool thing using the new text translator 'q'
-
-q \ (!!!) it will work to the end of this file
 
 : EXECUTE-EFFECT ( i*x xt -- j*x n ) DEPTH 1- >R EXECUTE DEPTH R> - ;
 

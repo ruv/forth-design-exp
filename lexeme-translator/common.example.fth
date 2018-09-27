@@ -59,7 +59,7 @@ DEFAULT-MARKUP PUSH-CURRENT
   : ]]        INC-STATE ;   : [[        DEC-STATE ;
   \ synonymes for readability
   : POSTPONE{ INC-STATE ;   : }POSTPONE DEC-STATE ;
-  : DIRECT{   DEC-STATE ;   : }DIRECT   DEC-STATE ;
+  : DIRECT{   DEC-STATE ;   : }DIRECT   INC-STATE ;
 
   \ postpone{ ... direct{ ... }direct ... }postpone
 
