@@ -10,6 +10,21 @@
 
 \ The useful factors
 
+\ Drop the flag; return control to the calling definition if the flag is not zero.
+: ?E ( flag -- ) \ Exit on true
+  POSTPONE IF POSTPONE EXIT POSTPONE THEN
+; IMMEDIATE
+
+\ Return control to the calling definition if the top value is not zero.
+: T?E ( x -- x )
+  POSTPONE DUP POSTPONE IF POSTPONE EXIT POSTPONE THEN
+; IMMEDIATE
+
+\ Return control to the calling definition if the top value is zero.
+: 0?E ( x -- x )
+  POSTPONE DUP POSTPONE 0= POSTPONE IF POSTPONE EXIT POSTPONE THEN
+; IMMEDIATE
+
 \ Return control to the calling definition if the top value is not zero,
 \ otherwise drop the top value (that is zero).
 : ?ET ( 0 -- | x -- x ) \ Exit on True returning this true
@@ -20,11 +35,6 @@
 \ otherwise drop the top value (that is not zero).
 : ?E0 ( x -- | 0 -- 0 ) \ Exit on 0 returning this 0
   POSTPONE DUP POSTPONE 0= POSTPONE IF POSTPONE EXIT POSTPONE THEN POSTPONE DROP
-; IMMEDIATE
-
-\ Drop the flag; return control to the calling definition if the flag is not zero.
-: ?E ( flag -- ) \ Exit on true
-  POSTPONE IF POSTPONE EXIT POSTPONE THEN
 ; IMMEDIATE
 
 
