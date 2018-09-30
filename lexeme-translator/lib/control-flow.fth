@@ -17,24 +17,24 @@
 
 \ Return control to the calling definition if the top value is not zero.
 : T?E ( x -- x )
-  POSTPONE DUP POSTPONE IF POSTPONE EXIT POSTPONE THEN
+  POSTPONE DUP POSTPONE ?E
 ; IMMEDIATE
 
 \ Return control to the calling definition if the top value is zero.
 : 0?E ( x -- x )
-  POSTPONE DUP POSTPONE 0= POSTPONE IF POSTPONE EXIT POSTPONE THEN
+  POSTPONE DUP POSTPONE 0= POSTPONE ?E
 ; IMMEDIATE
 
 \ Return control to the calling definition if the top value is not zero,
 \ otherwise drop the top value (that is zero).
 : ?ET ( 0 -- | x -- x ) \ Exit on True returning this true
-  POSTPONE DUP POSTPONE IF POSTPONE EXIT POSTPONE THEN POSTPONE DROP
+  POSTPONE T?E POSTPONE DROP
 ; IMMEDIATE
 
 \ Return control to the calling definition if the top value is zero,
 \ otherwise drop the top value (that is not zero).
 : ?E0 ( x -- | 0 -- 0 ) \ Exit on 0 returning this 0
-  POSTPONE DUP POSTPONE 0= POSTPONE IF POSTPONE EXIT POSTPONE THEN POSTPONE DROP
+  POSTPONE 0?E POSTPONE DROP
 ; IMMEDIATE
 
 
