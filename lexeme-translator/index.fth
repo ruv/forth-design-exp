@@ -30,6 +30,7 @@ S" ./resolver.api.L1.fth"                 INCLUDED
 S" ./lib/control-flow.fth"                INCLUDED
 S" ./lib/compiler.compat.fth"             INCLUDED
 S" ./lib/combinator.fth"                  INCLUDED
+S" ./lib/stack-effect.fth"                INCLUDED
 S" ./resolver.api.L2.fth"                 INCLUDED
 
 \ Level 3 - standard library
@@ -47,5 +48,4 @@ S" ./lib/wordlist.fth"                    INCLUDED
 S" ./common.example.fth"                  INCLUDED
 
 \ Example of some advanced techniques
-S" ./lib/stack-effect.fth"                INCLUDED
 S" ./advanced.example.fth"                INCLUDED

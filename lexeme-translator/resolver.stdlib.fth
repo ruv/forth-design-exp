@@ -70,6 +70,31 @@
 
 
 
+\ Resolve PQName — a partially qualified name (rvm, 2007)
+\ It is a name that is qualified by the path of wordlists separated by '::'
+\ Example:  S" test passed" MY-WORDLIST::STDIO::TYPE
+\ NB: PQName is translated as regualar word regardless of its immediate flag.
+: (RESOLVE-PQNAME-IN) ( d-txt-name wid -- xt tt | 0 )
+  BEGIN >R S" ::" SPLIT- -ROT R> SEARCH-WORDLIST WHILE
+    ( ... flag-of-split xt ) SWAP WHILE EXECUTE-BALANCED(+1)
+  REPEAT ['] TT-XT EXIT
+  THEN ( d-txt-right true | 0 ) ?E0 2DROP 0
+;
+: RESOLVE-PQNAME ( c-addr u -- xt tt-xt | c-addr u 0 )
+  2DUP S" ::" SPLIT-    0= IF  2DROP 0 EXIT THEN
+  RESOLVE-NATIVE  0= IF  2DROP 2DROP 0 EXIT THEN
+  EXECUTE-BALANCED(+1) ( d-txt-orig  d-txt-pathname wid )
+  (RESOLVE-PQNAME-IN) 0?E 2NIP
+;
+
+\ Resolve native or partially qualified name
+: RESOLVE-NATIVE-PQ ( c-addr u -- xt tt-xt | c-addr u 0 )
+  RESOLVE-NATIVE ?ET RESOLVE-PQNAME
+;
+
+
+
+
 
 
 \ A mechanism for chaining the resolvers is not fixed yet.
@@ -89,6 +114,7 @@
 
 : RESOLVE-LEXEM-DEFAULT ( c-addr u -- i*x tt | c-addr u 0 )
   RESOLVE-WORD          ?ET
+  RESOLVE-PQNAME        ?ET
   RESOLVE-NUMBER-ANY    ?ET
   FALSE
 ;

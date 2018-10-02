@@ -4,7 +4,7 @@
 \ E.g. in place of ['] XXX inside definitons or ' XXX outside definitions
 \ just always use 'XXX
 : RESOLVE-NATIVE-QUOTED ( c-addr u -- c-addr u 0 | xt tt-lit )
-  [CHAR] ' MATCH-HEAD-CHAR ?E0 RESOLVE-NATIVE IF ['] TT-LIT EXIT THEN -1 CHARS /STRING  0
+  [CHAR] ' MATCH-HEAD-CHAR ?E0 RESOLVE-NATIVE-PQ IF ['] TT-LIT EXIT THEN -1 CHARS /STRING  0
 ;
 
 \ Let's support single lexeme string in form `abc
