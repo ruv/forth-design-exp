@@ -18,13 +18,11 @@ q \ (!!!) it will work to the end of this file
 
 \ Let's define one cool thing using the new text translator 'q'
 
-: EXECUTE-EFFECT ( i*x xt -- j*x n ) DEPTH 1- >R EXECUTE DEPTH R> - ;
-
 DEFAULT-MARKUP PUSH-CURRENT
 
   : P{ ( -- )
     STATE-LEVEL 0= -14 AND THROW \ "interpreting a compile-only word" \ STATE0 is not supported yet
-    ':NONAME TT-LIT 'EXECUTE-EFFECT TT-XT 'N>R TT-XT
+    ':NONAME TT-LIT 'EXECUTE-BALANCE TT-XT 'N>R TT-XT
     INC-STATE
   ;
 

@@ -47,4 +47,5 @@ S" ./lib/wordlist.fth"                    INCLUDED
 S" ./common.example.fth"                  INCLUDED
 
 \ Example of some advanced techniques
+S" ./lib/stack-effect.fth"                INCLUDED
 S" ./advanced.example.fth"                INCLUDED
