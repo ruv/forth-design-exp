@@ -58,8 +58,8 @@ DEFAULT-MARKUP PUSH-CURRENT
 
   : ]]        INC-STATE ;   : [[        DEC-STATE ;
   \ synonymes for readability
-  : POSTPONE{ INC-STATE ;   : }POSTPONE DEC-STATE ;
-  : DIRECT{   DEC-STATE ;   : }DIRECT   INC-STATE ;
+  : postpone{ INC-STATE ;   : }postpone DEC-STATE ;
+  : direct{   DEC-STATE ;   : }direct   INC-STATE ;
 
   \ postpone{ ... direct{ ... }direct ... }postpone
 
@@ -76,8 +76,8 @@ DEFAULT-MARKUP PUSH-CURRENT
 
   \ Yet more sugar
 
-  : CALL{ DEC-STATE ;   : }CALL ( xt | -- ) ['] COMPILE,  TT-XT  INC-STATE ;
-  : LIT{  DEC-STATE ;   : }LIT  ( x  | -- ) ['] LIT,      TT-XT  INC-STATE ;
+  : call{ DEC-STATE ;   : }call ( xt | -- ) ['] COMPILE,  TT-XT  INC-STATE ;
+  : lit{  DEC-STATE ;   : }lit  ( x  | -- ) ['] LIT,      TT-XT  INC-STATE ;
 
   \ Example:
   \ lit{ 50 20 * }lit

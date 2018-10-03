@@ -20,13 +20,13 @@ q \ (!!!) it will work to the end of this file
 
 DEFAULT-MARKUP PUSH-CURRENT
 
-  : P{ ( -- )
+  : p{ ( -- )
     STATE-LEVEL 0= -14 AND THROW \ "interpreting a compile-only word" \ STATE0 is not supported yet
     ':NONAME TT-LIT 'EXECUTE-BALANCE TT-XT 'N>R TT-XT
     INC-STATE
   ;
 
-  : }P ( -- xt )
+  : }p ( -- xt )
     STATE-LEVEL 2 < -22 AND THROW \ "control structure mismatch"
     DEC-STATE
     'NR> TT-XT 'DROP TT-XT '; TT-XT
@@ -37,7 +37,7 @@ DROP-CURRENT
 
 \ test
 CR .( # --- Testing of p{ ... }p markup ) CR
-: foo P{ LIT{ DUP }LIT . LIT{ 7 + }LIT }P ;    123 foo EXECUTE CR ( -- n ) \ should print 123 and return 130
+: foo p{ lit{ DUP }lit . lit{ 7 + }lit }p ;    123 foo EXECUTE CR ( -- n ) \ should print 123 and return 130
 130 = [IF] .( test passed! ) [ELSE] .( test failed! ) [THEN] CR
 
 [THEN]
