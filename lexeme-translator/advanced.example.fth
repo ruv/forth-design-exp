@@ -36,6 +36,7 @@ DROP-CURRENT
 
 
 \ test
+CR .( # --- Testing of p{ ... }p markup ) CR
 : foo P{ LIT{ DUP }LIT . LIT{ 7 + }LIT }P ;    123 foo EXECUTE CR ( -- n ) \ should print 123 and return 130
 130 = [IF] .( test passed! ) [ELSE] .( test failed! ) [THEN] CR
 
