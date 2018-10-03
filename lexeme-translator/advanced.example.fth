@@ -18,10 +18,32 @@ q \ (!!!) it will work to the end of this file
 
 \ Let's define one cool thing using the new text translator 'q'
 
+
+: NEXT-LEXEME ( -- addr u|0 )
+  BEGIN PARSE-NAME ?ET ( addr ) REFILL ?E0 DROP AGAIN
+;
+: TEST-LEXEME-MARKUP-CURLY ( d-txt-lexeme -- d-txt-lexeme n )
+  2DUP `}   STARTS-WITH   IF -1 ELSE
+  2DUP `{   ENDS-WITH     IF  1 ELSE
+    0 EXIT
+  THEN THEN ( d-txt-lexeme n )
+  2 PICK 2 PICK MARKUP @ SEARCH-WORDLIST NIP ?E0
+;
+: TRANSLATE-INPUT-TILL-CURLY ( i*x d-txt-lexeme -- j*x )
+  2>R 1 >R BEGIN NEXT-LEXEME DUP WHILE
+    TEST-LEXEME-MARKUP-CURLY R> + 0 =? IF 2R> EQUALS ?E -22 THROW THEN >R
+    TRANSLATE-LEXEME ?NF ?STACK
+  REPEAT -22 THROW \ control structure mismatch
+;
+
+
 DEFAULT-MARKUP PUSH-CURRENT
 
+  : lit{}   GET-CURRENT::lit{   GET-CURRENT::}lit   ;
+  : call{}  GET-CURRENT::call{  GET-CURRENT::}call  ;
+
   : p{ ( -- )
-    STATE-LEVEL 0= -14 AND THROW \ "interpreting a compile-only word" \ STATE0 is not supported yet
+    STATE-LEVEL 0= -14 AND THROW \ "interpreting a compile-only word"
     ':NONAME TT-LIT 'EXECUTE-BALANCE TT-XT 'N>R TT-XT
     INC-STATE
   ;
@@ -32,6 +54,12 @@ DEFAULT-MARKUP PUSH-CURRENT
     'NR> TT-XT 'DROP TT-XT '; TT-XT
   ;
 
+  \ Redefine 'p{' to support STATE0
+  : p{
+    STATE-LEVEL IF GET-CURRENT::p{ EXIT THEN
+    p{ direct{ `}p TRANSLATE-INPUT-TILL-CURLY }direct }p
+  ;
+
 DROP-CURRENT
 
 
@@ -39,5 +67,7 @@ DROP-CURRENT
 CR .( # --- Testing of p{ ... }p markup ) CR
 : foo p{ lit{ DUP }lit . lit{ 7 + }lit }p ;    123 foo EXECUTE CR ( -- n ) \ should print 123 and return 130
 130 = [IF] .( test passed! ) [ELSE] .( test failed! ) [THEN] CR
+
+456 p{ lit{} . ." test2 passed" CR }p EXECUTE
 
 [THEN]
