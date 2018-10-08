@@ -1,12 +1,14 @@
 
 \ Simple REPL
 
+VARIABLE ASSEMBLING
+
 : (q)
   SOURCE-ID IF BEGIN TRANSLATE-SOURCE-SURELY REFILL 0= UNTIL EXIT THEN
   BEGIN ." #> " TRANSLATE-SOURCE-SURELY ."  -- S: " .S CR ." q> " REFILL 0= UNTIL
 ;
 : q
-  ['] (q) CATCH DUP IF SL 0! THEN THROW
+  ['] (q) CATCH DUP IF SL 0! ASSEMBLING 0! THEN THROW
 ;
 
 
@@ -37,6 +39,15 @@ q \ (!!!) it will work to the end of this file
 ;
 
 
+: (CONCEIVE) ( -- i*x i )
+  ASSEMBLING DUP @ 0<>  -29 AND THROW 1+! \ "compiler nesting"
+  ':NONAME EXECUTE-BALANCE
+;
+: (BIRTH) ( i*x i -- xt )
+  ASSEMBLING DUP @ 0=   -22 AND THROW 1-! \ "control structure mismatch"
+  DROP POSTPONE ;
+;
+
 DEFAULT-MARKUP PUSH-CURRENT
 
   : lit{}   GET-CURRENT::lit{   GET-CURRENT::}lit   ;
@@ -44,14 +55,14 @@ DEFAULT-MARKUP PUSH-CURRENT
 
   : p{ ( -- )
     STATE-LEVEL 0= -14 AND THROW \ "interpreting a compile-only word"
-    ':NONAME TT-LIT 'EXECUTE-BALANCE TT-XT 'N>R TT-XT
+    '(CONCEIVE) TT-XT 'N>R TT-XT
     INC-STATE
   ;
 
   : }p ( -- xt )
     STATE-LEVEL 2 < -22 AND THROW \ "control structure mismatch"
     DEC-STATE
-    'NR> TT-XT 'DROP TT-XT '; TT-XT
+    'NR> TT-XT '(BIRTH) TT-XT
   ;
 
   \ Redefine 'p{' to support STATE0
