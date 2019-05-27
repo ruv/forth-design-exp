@@ -11,7 +11,7 @@
 
 \ Useful factor
 \ take the flag; throw 'notfound' exception if the flag is false
-: ?NF ( c-addr u 0 -- | k*x true -- k*x )
+: ?NF ( i*x c-addr u 0 -- j*x -13 | k*x true -- k*x )
   0= IF -13 THROW THEN \ "undefined word" error
   \ the string ( c-addr u ) can be saved for further error message
 ;

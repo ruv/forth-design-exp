@@ -4,9 +4,9 @@
 <div class="content" title="Resolver vs Recognizer — API comparison" xmlns="http://www.w3.org/1999/xhtml">
   <link rel="stylesheet" href="/charm/comparison-table.css"/>
   <p>
-    Let's imagine that we want to implement arithmetic fractions calculus.
+    Let's imagine that we want to implement an arithmetic fractions calculus.
     And we need to support the simple fraction expressions
-    in form <b>aaa/bbb</b> (e.g. <b>355/113</b> ), where
+    in the form <b>aaa/bbb</b> (e.g. <b>355/113</b> ), where
     <b>aaa</b> is a double-cell number,
     <b>bbb</b> is a single-cell number.
     A fraction token is represented as <b>( d-numerator u-denominator )</b> pair.
@@ -33,12 +33,12 @@
 'NOOP :NONAME ( 3*x -- ) >R 2LIT, R> LIT, ;
 DUP RECTYPE: RECTYPE-3LIT
 
-\ NB: It can not be anonymous
+\ NB: RECTYPE-3LIT entity can not be anonymous (no API for that)
       </td>
       <td>
 : TT-3LIT ( 3*x -- 3*x | ) >R TT-2LIT  R> TT-LIT ;
 
-\ NB: It can be anonymous, or even a quotation
+\ NB: TT-3LIT entity can be anonymous, or even a quotation
       </td>
     </tr>
     <tr>
@@ -78,7 +78,7 @@ DUP RECTYPE: RECTYPE-3LIT
 
 \ NB: actually we need here a recognizer for a plain
 \ signed double number (without dot),
-\ REC-DNUM does not fit good.
+\ REC-DNUM is not well-suited for that.
       </td>
       <td>
 : RESOLVE-FRAC ( c-addr u -- 3*x tt | c-addr u 0 )
@@ -87,7 +87,7 @@ DUP RECTYPE: RECTYPE-3LIT
   2NIP 0 EXIT THEN 2R> 2DROP 0 ;] ?RETAIN2
 ;
 
-\ NB: this RESOLVE-DN <a href="&gh;/blob/master/lexeme-translator/resolver.stdlib.fth">resolver</a> resolves
+\ NB: this RESOLVE-DN <a href="&gh;blob/master/lexeme-translator/resolver.stdlib.fth">resolver</a> resolves
 \ a plain signed double number (without dot)
       </td>
     </tr>
@@ -232,7 +232,7 @@ RESOLVE-LEXEME ( c-addr u -- k*x xt-tt | c-addr u 0 )
           <li><i>Recognizer sequence</i> API is awkward in usage (see examples above).</li>
           <li>Managing of the system recongizers is overcomplicated.
             And it is inconsistant:
-            to add recognizer into the system chain the one entity is used
+            to add a recognizer into the system chain the one entity is used
             (<i>recognizer</i> itself),
             but to replace the system chain — another entity is used
             (<i>recognizer sequence</i>).
@@ -276,7 +276,7 @@ RESOLVE-LEXEME ( c-addr u -- k*x xt-tt | c-addr u 0 )
             is far more flexible than just <i>rectype</i> id.
             It allows to have <strong>user-defined modes for text translation</strong>.
           </li>
-          <li>Since lexeme resolvers retun original lexeme on fail,
+          <li>Since lexeme resolvers retun the original lexeme on fail,
             they can be be easy chained.
             <br/>
             An alternative to the recognizer sequence mechanism can be implemented as well,

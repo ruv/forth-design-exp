@@ -9,7 +9,7 @@
 \ Check compatibility wrt working with character units.
 1 CHARS 1 <> [IF]
   PAD 1 CHARS 1 /STRING DROP PAD - 1 <> [IF]
-    .( Sorry, chars handling in this programme is incompatible with the host Forth system. Abort. ) CR
+    .( Sorry, chars handling in this program is incompatible with the host Forth system. Abort. ) CR
     ABORT
   [THEN]
 [THEN]

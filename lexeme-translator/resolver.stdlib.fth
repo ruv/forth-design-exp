@@ -43,14 +43,14 @@
   DUP PAD C! PAD CHAR+ SWAP MOVE PAD
 ;
 
-\ Resolve a lexem as a Forth word,
+\ Resolve a lexeme as a Forth word,
 \ represent the result as "execution token" xt and immediate flag
 : RESOLVE-WORD ( c-addr u -- xt imm-flag tt | c-addr u 0 )
   2DUP CARBON-COUNTED-PAD FIND 0 =? IF DROP FALSE EXIT THEN 2NIP ( xt flag )
   1 = ['] TT-WORD
 ;
 
-\ Resolve a lexem as a Forth word,
+\ Resolve a lexeme as a Forth word,
 \ represent the result as "execution token" xt
 \ The immediate flag is ignored (if any).
 : RESOLVE-NATIVE ( c-addr u -- xt tt | c-addr u 0 )
@@ -60,7 +60,7 @@
 
 [DEFINED] TT-NT     [IF]
 [DEFINED] FIND-NAME [IF] \ find-name ( c-addr u -- nt|0 )
-\ Resolve a lexem as a Forth word,
+\ Resolve a lexeme as a Forth word,
 \ represent the result as "name token" nt
 : RESOLVE-NATIVE-NT ( c-addr u -- nt tt | c-addr u 0 )
   2DUP FIND-NAME DUP IF NIP NIP ['] TT-NT EXIT THEN
@@ -70,10 +70,10 @@
 
 
 
-\ Resolve PQName — a partially qualified name (rvm, 2007)
+\ Resolve a PQName — a partially qualified name (rvm, 2007)
 \ It is a name that is qualified by the path of wordlists separated by '::'
 \ Example:  S" test passed" MY-WORDLIST::STDIO::TYPE
-\ NB: PQName is translated as regualar word regardless of its immediate flag.
+\ NB: PQName is translated as a regular word regardless of its immediate flag.
 : (RESOLVE-PQNAME-IN) ( d-txt-name wid -- xt tt | 0 )
   BEGIN >R S" ::" SPLIT- -ROT R> SEARCH-WORDLIST WHILE
     ( ... flag-of-split xt ) SWAP WHILE EXECUTE-BALANCED(+1)
@@ -87,7 +87,7 @@
   (RESOLVE-PQNAME-IN) 0?E 2NIP
 ;
 
-\ Resolve native or partially qualified name
+\ Resolve a native or partially qualified name
 : RESOLVE-NATIVE-PQ ( c-addr u -- xt tt-xt | c-addr u 0 )
   RESOLVE-NATIVE ?ET RESOLVE-PQNAME
 ;
@@ -112,7 +112,7 @@
   FALSE
 ;
 
-: RESOLVE-LEXEM-DEFAULT ( c-addr u -- i*x tt | c-addr u 0 )
+: RESOLVE-LEXEME-DEFAULT ( c-addr u -- i*x tt | c-addr u 0 )
   RESOLVE-WORD          ?ET
   RESOLVE-PQNAME        ?ET
   RESOLVE-NUMBER-ANY    ?ET
@@ -121,4 +121,4 @@
 
 \ Set initial resolver
 
-' RESOLVE-LEXEM-DEFAULT SET-RESOLVER
+' RESOLVE-LEXEME-DEFAULT SET-RESOLVER
