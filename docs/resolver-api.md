@@ -3,11 +3,6 @@
 
 ## API Level 1 (minimal)
 
-`TT-NOOP ( -- )` <br/>
-It is a "noop" token translator that does nothing.
-It shall be returned by a lexeme resolver chain when
-it has performed a parse-only action and has not produced any token.
-
 `SET-RESOLVER      ( xt|0 -- )` <br/>
 Set the system's lexeme resolver chain.
 Subsequent calls of `RESOLVER` word shall return this `xt|0`.
@@ -17,6 +12,14 @@ Return the system's lexeme resolver chain.
 This word shall return either `xt|0` that was set by the previous call
 of `SET-RESOLVER` word, or the system default value (see bellow)
 if there was not such call yet (i.e. before the first such call).
+
+
+`TT-NOOP ( -- )` <br/>
+It is a "noop" token translator that does nothing.
+It shall be returned by a lexeme resolver chain
+when it has produced a side effect that can be detected via whatever standard API.
+The returned token shall be empty (absent) in this case.
+
 
 
 ### Changes in the text interpreter
@@ -35,6 +38,9 @@ where `xt-tt` has the stack effect `( i*x k*x -- j*x ) ( F: l*r m*r -- n*r )`.<b
 In the case of _k+m_ is 0, `xt-tt` may be equal to the xt of `TT-NOOP` word.
 Otherwise `xt-tt` should represent the semantics of (b.1-2) or (c.1-2) items
 of the text interpreter in accordance with the returned values.
+
+Performing of this definition should not have a detectable side effect
+beyond the specified stack effect.
 
 The xt of this definition (__t__)
 is the system default lexeme resolver chain
