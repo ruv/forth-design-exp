@@ -32,8 +32,8 @@ For that the system shall also represent its original (b) and (c) parts
 of the text interpreter as a separate definition (__t__) with the stack effect
 `( c-addr u -- k*x xt-tt | addr u 0 ) ( F: -- m*r )`,
 where `xt-tt` has the stack effect `( i*x k*x -- j*x ) ( F: l*r m*r -- n*r )`.<br/>
-In the case of _k+m_ is 0, `xt-tt` shall be equal to the xt of `TT-NOOP` word.
-Otherwise `xt-tt` may represent the semantics of (b.1-2) or (c.1-2) items
+In the case of _k+m_ is 0, `xt-tt` may be equal to the xt of `TT-NOOP` word.
+Otherwise `xt-tt` should represent the semantics of (b.1-2) or (c.1-2) items
 of the text interpreter in accordance with the returned values.
 
 The xt of this definition (__t__)
