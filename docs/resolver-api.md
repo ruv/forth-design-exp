@@ -9,15 +9,17 @@ It shall be returned by a lexeme resolver chain when
 it has performed a parse-only action and has not produced any token.
 
 `SET-RESOLVER      ( xt|0 -- )` <br/>
-Set the current (system default) lexeme resolver chain.
+Set the system's lexeme resolver chain.
 Subsequent calls of `RESOLVER` word shall return this `xt|0`.
 
 `RESOLVER          ( -- xt|0 )` <br/>
-Return the current (system default) lexeme resolver chain.
+Return the system's lexeme resolver chain.
 This word shall return either `xt|0` that was set by the previous call
 of `SET-RESOLVER` word, or the system default value (see bellow)
 if there was not such call yet (i.e. before the first such call).
 
+
+### Changes in the text interpreter
 
 A Forth system shall perform the following semantics
 in place of (b) and (c) items of The Forth text interpreter algorithm
@@ -32,9 +34,12 @@ of the text interpreter as a separate definition (__t__) with the stack effect
 where `xt-tt` has the stack effect `( i*x k*x -- j*x ) ( F: l*r m*r -- n*r )`.<br/>
 In the case of _k+m_ is 0, `xt-tt` shall be equal to the xt of `TT-NOOP` word.
 Otherwise `xt-tt` may represent the semantics of (b.1-2) or (c.1-2) items
-of the text interpreter depending on the returned values.
+of the text interpreter in accordance with the returned values.
 
-The xt of this definition (__t__) shall be return by `RESOLVER` word
+The xt of this definition (__t__)
+is the system default lexeme resolver chain
+and it
+shall be return by `RESOLVER` word
 before the first call of `SET-RESOLVER` word.
 
 
@@ -70,8 +75,8 @@ An ambiguous condition exists if there is no such xt.
 
 `RESOLVE-LEXEME ( c-addr u -- k*x xt-tt | c-addr u 0 ) ( F: -- m*r ) ` <br/>
 Try to resolve a lexeme (c-addr u) using the current system resolver.
-On success return the token (k*x) and the token translator xt-tt,
-on fail return (c-addr u) and 0.
+On success return the token `(k*x) (F: m*r)` and the token translator `xt-tt`,
+on fail return `(c-addr u)` and `0`.
 
 `TRANSLATE-LEXEME ( i*x c-addr u -- j*x true | c-addr u 0 ) ( F: l*r -- n*r )` <br/>
 The execution semantics of this word is `RESOLVE-LEXEME DUP IF EXECUTE TRUE THEN`
@@ -101,7 +106,7 @@ Translate a "name token" according to the current state.
 Translate a "word token" `(xt -1|0)` according to the current state.
 
 `TT-LITERAL-WITH ( k*x xt -- k*x | ) ( F: m*r -- m*r | ) \ xt ( k*x --  F: m*r -- ) ` <br/>
-Translate a literal token `( S: k*x ) ( F: m*r )` according to the current state
+Translate a numeric literal token `(k*x) (F: m*r)` according to the current state
 using the compilation word represented by `xt`.
 
 
