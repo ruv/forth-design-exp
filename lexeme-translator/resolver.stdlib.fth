@@ -5,6 +5,7 @@
 
 \ double-cell number unsigned plain
 : RESOLVE-DUN ( c-addr u -- x x tt | c-addr u 0 )
+  DUP ?E0 \ empty string is not a number
   2DUP 0 0 2SWAP >NUMBER NIP IF 2DROP 0 EXIT THEN 2NIP ['] TT-2LIT
 ;
 \ double-cell number plain with optional sign
@@ -30,6 +31,7 @@
 [DEFINED] >FLOAT    [IF]
 \ float number in standard 'E' format
 : RESOLVE-FN-E ( c-addr u -- tt | c-addr u 0 ) ( F: -- f | )
+  2DUP S" E" CONTAINS ?E0
   2DUP >FLOAT IF 2DROP ['] TT-FLIT EXIT THEN  0
 ;
 [THEN] [THEN]
@@ -46,8 +48,8 @@
 \ Resolve a lexeme as a Forth word,
 \ represent the result as "execution token" xt and immediate flag
 : RESOLVE-WORD ( c-addr u -- xt imm-flag tt | c-addr u 0 )
-  2DUP CARBON-COUNTED-PAD FIND 0 =? IF DROP FALSE EXIT THEN 2NIP ( xt flag )
-  1 = ['] TT-WORD
+  2DUP CARBON-COUNTED-PAD FIND DUP IF 2NIP 1 = ['] TT-WORD EXIT THEN NIP
+  \ NB: the result depends on STATE in the general case #issue
 ;
 
 \ Resolve a lexeme as a Forth word,
