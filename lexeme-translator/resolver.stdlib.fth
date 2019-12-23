@@ -26,6 +26,29 @@
 : RESOLVE-N ( c-addr u -- x tt | c-addr u 0 )
   RESOLVE-DN DUP IF 2DROP ['] TT-LIT THEN
 ;
+\ single-cell number with optional prefix of radix code
+: EXTRACT-RADIX ( c-addr u -- c-addr u 0 | c-addr2 u2 radix )
+  DUP 1 U> ?E0  OVER C@
+  [CHAR] $ =? IF 16 ELSE
+  [CHAR] # =? IF 10 ELSE
+  [CHAR] % =? IF 2  ELSE
+    DROP S" 0x" MATCH-HEAD 16 AND EXIT
+  THEN THEN THEN >R 1 CHARS /STRING R>
+;
+: EXECUTE-WITH-BASE ( i*x base xt -- j*x )
+  BASE @ >R SWAP BASE ! EXECUTE R> BASE !
+;
+: RESOLVE-N-RADIX ( c-addr u -- x tt | c-addr u 0 )
+  2DUP EXTRACT-RADIX ?DUP 0= IF 2DROP RESOLVE-N EXIT THEN
+  ['] RESOLVE-N EXECUTE-WITH-BASE DUP IF 2NIP EXIT THEN NIP NIP
+;
+: RESOLVE-DN-RADIX ( c-addr u -- x x tt | c-addr u 0 )
+  2DUP EXTRACT-RADIX ?DUP 0= IF 2DROP RESOLVE-DN EXIT THEN
+  ['] RESOLVE-DN EXECUTE-WITH-BASE DUP IF >R 2NIP R> EXIT THEN NIP NIP
+;
+: RESOLVE-DN-DOT-RADIX ( c-addr u -- x tt | c-addr u 0 )
+  [CHAR] . MATCH-TAIL-CHAR ?E0 RESOLVE-DN-RADIX ?ET CHAR+ 0
+;
 
 [DEFINED] TT-FLIT   [IF]
 [DEFINED] >FLOAT    [IF]
@@ -105,8 +128,8 @@
 
 
 : RESOLVE-NUMBER-ANY ( c-addr u -- i*x tt | c-addr u 0 )
-  RESOLVE-DN-DOT    ?ET
-  RESOLVE-N         ?ET
+  RESOLVE-DN-DOT-RADIX  ?ET
+  RESOLVE-N-RADIX       ?ET
 
   [DEFINED] RESOLVE-FN-E    [IF]
   RESOLVE-FN-E      ?ET     [THEN]
