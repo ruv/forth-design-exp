@@ -38,16 +38,16 @@
 : EXECUTE-WITH-BASE ( i*x base xt -- j*x )
   BASE @ >R SWAP BASE ! EXECUTE R> BASE !
 ;
-: RESOLVE-N-RADIX ( c-addr u -- x tt | c-addr u 0 )
+: RESOLVE-N-PREFIXED ( c-addr u -- x tt | c-addr u 0 )
   2DUP EXTRACT-RADIX ?DUP 0= IF 2DROP RESOLVE-N EXIT THEN
   ['] RESOLVE-N EXECUTE-WITH-BASE DUP IF 2NIP EXIT THEN NIP NIP
 ;
-: RESOLVE-DN-RADIX ( c-addr u -- x x tt | c-addr u 0 )
+: RESOLVE-DN-PREFIXED ( c-addr u -- x x tt | c-addr u 0 )
   2DUP EXTRACT-RADIX ?DUP 0= IF 2DROP RESOLVE-DN EXIT THEN
   ['] RESOLVE-DN EXECUTE-WITH-BASE DUP IF >R 2NIP R> EXIT THEN NIP NIP
 ;
-: RESOLVE-DN-DOT-RADIX ( c-addr u -- x tt | c-addr u 0 )
-  [CHAR] . MATCH-TAIL-CHAR ?E0 RESOLVE-DN-RADIX ?ET CHAR+ 0
+: RESOLVE-DN-DOT-PREFIXED ( c-addr u -- x tt | c-addr u 0 )
+  [CHAR] . MATCH-TAIL-CHAR ?E0 RESOLVE-DN-PREFIXED ?ET CHAR+ 0
 ;
 
 [DEFINED] TT-FLIT   [IF]
@@ -128,8 +128,8 @@
 
 
 : RESOLVE-NUMBER-ANY ( c-addr u -- i*x tt | c-addr u 0 )
-  RESOLVE-DN-DOT-RADIX  ?ET
-  RESOLVE-N-RADIX       ?ET
+  RESOLVE-DN-DOT-PREFIXED   ?ET
+  RESOLVE-N-PREFIXED        ?ET
 
   [DEFINED] RESOLVE-FN-E    [IF]
   RESOLVE-FN-E      ?ET     [THEN]
