@@ -107,13 +107,13 @@ DUP RECTYPE: RECTYPE-3LIT
       </td>
     </tr>
     <tr>
-      <td><h3>Manage system recognizers via the proposed API</h3></td>
-      <td><h3>Manage system resolvers via the proposed API</h3></td>
+      <td><h3>Manage system's recognizer via the proposed API</h3></td>
+      <td><h3>Manage system's resolver via the proposed API</h3></td>
     </tr>
     <tr/><!-- empty code section -->
     <tr>
-      <td><h4>Temporary add a recognizer into <strong>the tail</strong> of the system recognizer chain</h4></td>
-      <td><h4>Temporary add a resolver into <strong>the tail</strong> of the system resolver chain</h4></td>
+      <td><h4>Temporary add a recognizer into <strong>the tail</strong> of the system's recognizer chain</h4></td>
+      <td><h4>Temporary add a resolver into <strong>the tail</strong> of the system's resolver chain</h4></td>
     </tr>
     <tr>
       <td>
@@ -122,22 +122,22 @@ DUP RECTYPE: RECTYPE-3LIT
 
 \ ...
 
-\ Restore the system recognizer
+\ Restore the system's recognizer
 FORTH-RECOGNIZER GET-RECOGNIZER 1-
 FORTH-RECOGNIZER SET-RECOGNIZER DROP
       </td>
       <td>
-'RESOLVE-FRAC ENQUEUE-RESOLVER
+'RESOLVE-FRAC ENQUEUE-PERCEPTOR
 
 \ ...
 
-\ Restore the system resolver
-UNDO-RESOLVER
+\ Restore the system's resolver
+UNDO-PERCEPTOR
       </td>
     </tr>
     <tr>
-      <td><h4>Temporary add a recognizer into <strong>the head</strong> of the system recognizer chain</h4></td>
-      <td><h4>Temporary add a resolver into <strong>the head</strong> of the system resolver chain</h4></td>
+      <td><h4>Temporary add a recognizer into <strong>the head</strong> of the system's recognizer chain</h4></td>
+      <td><h4>Temporary add a resolver into <strong>the head</strong> of the system's resolver chain</h4></td>
     </tr>
     <tr>
       <td>
@@ -147,23 +147,23 @@ FORTH-RECOGNIZER SET-RECOGNIZER
 
 \ ...
 
-\ Restore the system recognizer
+\ Restore the system's recognizer
 FORTH-RECOGNIZER GET-RECOGNIZER NIP 1-
 FORTH-RECOGNIZER SET-RECOGNIZER
       </td>
       <td>
-'RESOLVE-LEXICON-FRAC PREEMPT-RESOLVER
+'RESOLVE-LEXICON-FRAC PREEMPT-PERCEPTOR
 
 \ ...
 
-\ Restore the system resolver
-UNDO-RESOLVER
+\ Restore the system's resolver
+UNDO-PERCEPTOR
       </td>
     </tr>
 
     <tr>
-      <td><h4>Temporary replace the system recognizer chain</h4></td>
-      <td><h4>Temporary replace the system resolver chain</h4></td>
+      <td><h4>Temporary replace the system's recognizer chain</h4></td>
+      <td><h4>Temporary replace the system's resolver chain</h4></td>
     </tr>
     <tr>
       <td>
@@ -174,29 +174,29 @@ FORTH-RECOGNIZER SET-RECOGNIZER
 
 \ ...
 
-\ Restore the system recognizer
+\ Restore the system's recognizer
 ( i*x i ) FORTH-RECOGNIZER SET-RECOGNIZER
       </td>
       <td>
-RESOLVER ( xt-previous-resolver )
-'RESOLVE-LEXICON-FRAC SET-RESOLVER
+PERCEPTOR ( xt-previous-resolver )
+'RESOLVE-LEXICON-FRAC SET-PERCEPTOR
 
 \ ...
 
-\ Restore the system resolver
-( xt-previous-resolver ) SET-RESOLVER
+\ Restore the system's resolver
+( xt-previous-resolver ) SET-PERCEPTOR
       </td>
     </tr>
     <tr>
-      <td><h4>Call the current system reconizer chain</h4></td>
-      <td><h4>Call the current system resolver chain</h4></td>
+      <td><h4>Call the current system's reconizer chain</h4></td>
+      <td><h4>Call the current system's resolver chain</h4></td>
     </tr>
     <tr>
       <td>
 FORTH-RECOGNIZER RECOGNIZE ( c-addr u -- k*x rectype | rectype-null )
       </td>
       <td>
-RESOLVE-LEXEME ( c-addr u -- k*x xt-tt | c-addr u 0 )
+PERCEIVE-LEXEME ( c-addr u -- k*x xt-tt | c-addr u 0 )
       </td>
     </tr>
     <tr>
@@ -230,18 +230,18 @@ RESOLVE-LEXEME ( c-addr u -- k*x xt-tt | c-addr u 0 )
             — it superimposes unnecessary complication into the level of usage.
           </li>
           <li><i>Recognizer sequence</i> API is awkward in usage (see examples above).</li>
-          <li>Managing of the system recongizers is overcomplicated.
+          <li>Managing of the system's recongizers is overcomplicated.
             And it is inconsistant:
-            to add a recognizer into the system chain the one entity is used
+            to add a recognizer into the system's chain the one entity is used
             (<i>recognizer</i> itself),
-            but to replace the system chain — another entity is used
+            but to replace the system's chain — another entity is used
             (<i>recognizer sequence</i>).
           </li>
           <li>Nothing naming convention is proposed for <i>recognizer sequence</i> instances.</li>
           <li>Naming convention for GET-RECOGNIZER and SET-RECOGNIZER
             (that take object on the stack)
             conflicts with such standard words like GET-ORDER and SET-ORDER
-            (that work with the system object).
+            (that work with the system's object).
           </li>
         </ul>
         <h2>Advantages</h2>
@@ -255,7 +255,7 @@ RESOLVE-LEXEME ( c-addr u -- k*x xt-tt | c-addr u 0 )
       <td>
         <h2>Disadvantages</h2>
         <ul>
-          <li>System can not introspect a user-defined resolver chain
+          <li>A system can not introspect a user-defined resolver chain
             (it is applied to Reconizer API as well).
             Although a special API can be designed for this purpose,
             a user is free to not use such API and compose a chain by its own.

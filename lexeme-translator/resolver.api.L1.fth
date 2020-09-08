@@ -20,7 +20,7 @@
 
 \ Private words
 
-VARIABLE CURRENT-RESOLVER \ current lexeme resolver
+VARIABLE _PERCEPTOR \ a lexeme resolver that is currently used by the system
 
 
 
@@ -28,9 +28,9 @@ VARIABLE CURRENT-RESOLVER \ current lexeme resolver
 
 \ Get and set the system default lexeme resolver.
 \ The names choice is aligned with naming convention of PRECISION and SET-PRECISION words.
-: SET-RESOLVER      ( xt -- ) CURRENT-RESOLVER ! ;
-: RESOLVER          ( -- xt ) CURRENT-RESOLVER @ ;
-\ Possible alias for the latter one is GET-RESOLVER
+: SET-PERCEPTOR      ( xt -- ) _PERCEPTOR ! ;
+: PERCEPTOR          ( -- xt ) _PERCEPTOR @ ;
+\ Possible alias for the latter one is GET-PERCEPTOR
 \ - to be aligned with naming convention of GET-CURRENT and SET-CURRENT words.
 
 
@@ -44,14 +44,14 @@ VARIABLE CURRENT-RESOLVER \ current lexeme resolver
 \ or unchanged lexeme and false.
 \ This word should not be chained with any other resolvers
 \ to avoid unnecessary indirect recursion
-: RESOLVE-LEXEME ( c-addr u -- k*x xt-tt | c-addr u 0 )
-  RESOLVER DUP IF EXECUTE THEN
+: PERCEIVE-LEXEME ( c-addr u -- k*x xt-tt | c-addr u 0 )
+  PERCEPTOR DUP IF EXECUTE THEN
 ;
 
 \ Top-level lexeme translator.
 \ It return an effect of translating (if any) and true or unchanged lexeme and false
 : TRANSLATE-LEXEME ( i*x c-addr u -- j*x true | c-addr u 0 )
-  RESOLVE-LEXEME DUP IF EXECUTE TRUE THEN
+  PERCEIVE-LEXEME DUP IF EXECUTE TRUE THEN
 ;
 \ NB: TRANSLATE-TOKEN is just EXECUTE
 

@@ -1,25 +1,30 @@
 
 # Lexeme resolver mechanism
 
+## Terms and notations
+
+**perceptor**: a resolver that is currently used by the system to resolve lexems.
+
 ## API Level 1 (minimal)
 
-`SET-RESOLVER      ( xt|0 -- )` <br/>
-Set the system's lexeme resolver chain.
-Subsequent calls of `RESOLVER` word shall return this `xt|0`.
+`SET-PERCEPTOR      ( xt|0 -- )` <br/>
+Set the perceptor to be the resolver xt.
+Subsequent calls of `PERCEPTOR` word shall return this `xt|0`.
 
-`RESOLVER          ( -- xt|0 )` <br/>
-Return the system's lexeme resolver chain.
+`PERCEPTOR          ( -- xt|0 )` <br/>
+Return the resolver.
 This word shall return either `xt|0` that was set by the previous call
-of `SET-RESOLVER` word, or the system default value (see bellow)
-if there was not such call yet (i.e. before the first such call).
+of `SET-PERCEPTOR` word, or the system's default value (see bellow)
+if there was not such a call yet (i.e. before the first such a call).
 
 
 `TT-NOOP ( -- )` <br/>
 It is a "noop" token translator that does nothing.
-It shall be returned by a lexeme resolver chain
+It shall be returned by a lexeme resolver
 when it has produced a side effect that can be detected via whatever standard API.
 The returned token shall be empty (absent) in this case.
 
+NB: side effects of the resolvers are discouraged, and the word `TT-NOOP` is obsolescent.
 
 
 ### Changes in the text interpreter
@@ -28,7 +33,7 @@ A Forth system shall perform the following semantics
 in place of (b) and (c) items of The Forth text interpreter algorithm
 (per [section 3.4](http://www.forth200x.org/documents/html/usage.html#section.3.4)
 of the Forth 2012 Standard):
-`RESOLVER DUP IF EXECUTE DUP IF EXECUTE TRUE THEN THEN ( flag )`<br/>
+`PERCEPTOR DUP IF EXECUTE DUP IF EXECUTE TRUE THEN THEN ( flag )`<br/>
 This `flag` is the flag of successful for item (d).
 
 For that the system shall also represent its original (b) and (c) parts
@@ -43,33 +48,33 @@ Performing of this definition should not have a detectable side effect
 beyond the specified stack effect.
 
 The xt of this definition (__t__)
-is the system default lexeme resolver chain
+is the system's default lexeme resolver (default perceptor)
 and it
-shall be return by `RESOLVER` word
-before the first call of `SET-RESOLVER` word.
+shall be return by `PERCEPTOR` word
+before the first call of `SET-PERCEPTOR` word.
 
 
 
-## API Level 2 (managing the system resolver chain)
+## API Level 2 (managing the system resolver)
 
-For the generality, further _resolver_ term means _lexeme resolver chain_
+For the generality, further _resolver_ term means _lexeme resolver_
 if other is not stated.
 
 This API is a subject for elaborating.
 
-`ENQUEUE-RESOLVER ( xt -- )` <br/>
-Add resolver xt into the tail of the system resolver chain.
-After that the subsequent call of __RESOLVER__ word may return different value.
-__ENQUEUE-RESOLVER__ word may allot data space and create a definition.
+`ENQUEUE-PERCEPTOR ( xt -- )` <br/>
+Set the perceptor to be the combination of the perceptor before that and the resolver xt.
+After that the subsequent call of __PERCEPTOR__ word may return the different value.
+__ENQUEUE-PERCEPTOR__ word may allot data space and create a definition.
 
-`PREEMPT-RESOLVER ( xt -- )` <br/>
-Add resolver xt into the head of the system resolver chain.
-After that the subsequent call of __RESOLVER__ word may return different value.
-__PREEMPT-RESOLVER__ word may allot data space and create a definition.
+`PREEMPT-PERCEPTOR ( xt -- )` <br/>
+Set the perceptor to be the combination of the resolver xt and the perceptor before that.
+After that the subsequent call of __PERCEPTOR__ word may return the different value.
+__PREEMPT-PERCEPTOR__ word may allot data space and create a definition.
 
-`UNDO-RESOLVER ( -- )` <br/>
-Remove the latest added xt from the system resolver chain.
-After that the subsequent call of __RESOLVER__ word may return different value.
+`UNDO-PERCEPTOR ( -- )` <br/>
+Undo the latest changes of the perceptor.
+After that the subsequent call of __PERCEPTOR__ word may return the different value.
 An ambiguous condition exists if there is no such xt.
 
 
@@ -79,8 +84,8 @@ An ambiguous condition exists if there is no such xt.
 
 ### Lexeme translator
 
-`RESOLVE-LEXEME ( c-addr u -- k*x xt-tt | c-addr u 0 ) ( F: -- m*r ) ` <br/>
-Try to resolve a lexeme (c-addr u) using the current system resolver.
+`PERCEIVE-LEXEME ( c-addr u -- k*x xt-tt | c-addr u 0 ) ( F: -- m*r ) ` <br/>
+Try to resolve a lexeme (c-addr u) using the perceptor.
 On success return the token `(k*x) (F: m*r)` and the token translator `xt-tt`,
 on fail return `(c-addr u)` and `0`.
 

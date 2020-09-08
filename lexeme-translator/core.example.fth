@@ -25,7 +25,7 @@ CR .( # --- Example definitions for some standard words ) CR
 ;
 
 : '         ( " name" -- xt   )
-  PARSE-NAME RESOLVE-LEXEME TOKEN-XT? IF EXIT THEN ?NF ( k*x ) -32 THROW \ "invalid name argument"
+  PARSE-NAME PERCEIVE-LEXEME TOKEN-XT? IF EXIT THEN ?NF ( k*x ) -32 THROW \ "invalid name argument"
 ;
 
 \ Also define "[']" to make it the same featured as "'"

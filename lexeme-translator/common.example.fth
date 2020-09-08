@@ -98,8 +98,8 @@ DROP-CURRENT
 \ To manage these words the MARKUP wordlist should be used.
 
 \ To give priority to the markup words,
-\ let's put their resolver into the head of chain.
-' RESOLVE-MAKRUP-IMMEDIATE PREEMPT-RESOLVER
+\ let's put their resolver into the head of the system's chain.
+' RESOLVE-MAKRUP-IMMEDIATE PREEMPT-PERCEPTOR
 
 
 
@@ -110,4 +110,4 @@ DROP-CURRENT
   RESOLVE-CHAR-TICK         ?ET
   RESOLVE-STRING-SOURCE     ?ET
   FALSE
-; ' RESOLVE-LITERAL-COMMON ENQUEUE-RESOLVER
+; ' RESOLVE-LITERAL-COMMON ENQUEUE-PERCEPTOR

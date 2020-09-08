@@ -90,4 +90,4 @@ VARIABLE (XSTATE)
 ;
 
 \ add new resolver into the system resolver chain
-' RESOLVE-N-0x ENQUEUE-RESOLVER
+' RESOLVE-N-0x ENQUEUE-PERCEPTOR
