@@ -4,25 +4,25 @@
 \ E.g. in place of ['] XXX inside definitons or ' XXX outside definitions
 \ just always use 'XXX
 : RESOLVE-NATIVE-QUOTED ( c-addr u -- c-addr u 0 | xt tt-lit )
-  [CHAR] ' MATCH-HEAD-CHAR ?E0 RESOLVE-NATIVE-PQ IF ['] TT-LIT EXIT THEN -1 CHARS /STRING  0
+  [CHAR] ' MATCH-CHAR-HEAD ?E0 RESOLVE-NATIVE-PQ IF ['] TT-LIT EXIT THEN -1 CHARS /STRING  0
 ;
 
 \ Let's support single lexeme string in form `abc
 : RESOLVE-SLIT-SHORT ( c-addr u -- c-addr u 0 | xt tt-slit )
-  DUP 1 CHARS > ?E0  [CHAR] ` MATCH-HEAD-CHAR ?E0  ['] TT-SLIT
+  DUP 1 CHARS > ?E0  [CHAR] ` MATCH-CHAR-HEAD ?E0  ['] TT-SLIT
 ;
 
 \ Let's support character literals in form 'x'
 : RESOLVE-CHAR-TICK ( c-addr u -- c-addr u 0 | xt tt-slit )
   DUP 3 CHARS = ?E0
-  [CHAR] ' MATCH-TAIL-CHAR ?E0
-  [CHAR] ' MATCH-HEAD-CHAR IF DROP C@ ['] TT-LIT EXIT THEN CHAR+ 0
+  [CHAR] ' MATCH-CHAR-TAIL ?E0
+  [CHAR] ' MATCH-CHAR-HEAD IF DROP C@ ['] TT-LIT EXIT THEN CHAR+ 0
 ;
 
 \ Let's support strings literals in form "abc def" (on single line, in SOURCE)
 : RESOLVE-STRING-SOURCE ( c-addr u -- c-addr u 0 | xt tt-slit )
-  [CHAR] " MATCH-HEAD-CHAR ?E0
-  [CHAR] " MATCH-TAIL-CHAR IF ['] TT-SLIT EXIT THEN
+  [CHAR] " MATCH-CHAR-HEAD ?E0
+  [CHAR] " MATCH-CHAR-TAIL IF ['] TT-SLIT EXIT THEN
   DROP \ ensure that (c-addr) inside SOURCE
   DUP  SOURCE DROP  DUP >IN @ + 1+  WITHIN 0= IF -11 THROW THEN \ "result out of range"
   [CHAR] " PARSE + OVER - ['] TT-SLIT

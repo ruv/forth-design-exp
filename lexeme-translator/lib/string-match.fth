@@ -15,12 +15,12 @@
 [THEN]
 
 
-: MATCH-HEAD-CHAR ( c-addr u c -- c-addr2 u2 true | c-addr u false )
+: MATCH-CHAR-HEAD ( c-addr u c -- c-addr2 u2 true | c-addr u false )
   OVER 0= IF DROP FALSE EXIT THEN
   >R OVER C@ R> = ?E0 1 CHARS /STRING TRUE
 ;
 
-: MATCH-TAIL-CHAR ( c-addr u c -- c-addr u2 true | c-addr u false )
+: MATCH-CHAR-TAIL ( c-addr u c -- c-addr u2 true | c-addr u false )
   OVER 0= IF DROP FALSE EXIT THEN
   >R 2DUP + CHAR- C@  R> = ?E0 CHAR- TRUE
 ;

@@ -10,13 +10,13 @@
 ;
 \ double-cell number plain with optional sign
 : RESOLVE-DN ( c-addr u -- x x tt | c-addr u 0 )
-  [CHAR] - MATCH-HEAD-CHAR >R
+  [CHAR] - MATCH-CHAR-HEAD >R
   RESOLVE-DUN DUP IF R> IF >R DNEGATE R> THEN EXIT THEN
   DROP R> IF -1 CHARS /STRING THEN  0
 ;
 \ double-cell number with trailing dot and optional sign
 : RESOLVE-DN-DOT ( c-addr u -- x x tt | c-addr u 0 )
-  [CHAR] . MATCH-TAIL-CHAR ?E0 RESOLVE-DN ?ET CHAR+ 0
+  [CHAR] . MATCH-CHAR-TAIL ?E0 RESOLVE-DN ?ET CHAR+ 0
 ;
 \ single-cell number unsigned plain
 : RESOLVE-UN ( c-addr u -- x tt | c-addr u 0 )
@@ -47,7 +47,7 @@
   ['] RESOLVE-DN EXECUTE-WITH-BASE DUP IF >R 2NIP R> EXIT THEN NIP NIP
 ;
 : RESOLVE-DN-DOT-PREFIXED ( c-addr u -- x tt | c-addr u 0 )
-  [CHAR] . MATCH-TAIL-CHAR ?E0 RESOLVE-DN-PREFIXED ?ET CHAR+ 0
+  [CHAR] . MATCH-CHAR-TAIL ?E0 RESOLVE-DN-PREFIXED ?ET CHAR+ 0
 ;
 
 [DEFINED] TT-FLIT   [IF]
