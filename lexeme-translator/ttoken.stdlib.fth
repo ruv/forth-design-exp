@@ -2,7 +2,7 @@
 
 \ Token translators
 
-\ The 'TT-' prefix stands for "token translator" (and also for "token-type")
+\ The 'TT-' prefix stands for "translate-token" (and also for "token-type")
 
 \ Managing postponing level.
 \ This general implementation just keeps sync with standard STATE variable.

@@ -7,6 +7,7 @@
 \ A lexeme translator has the stack signature ( i*x c-addr u -- j*x true | i*x addr u 0 )
 
 \ Prefix 'TT-' stands for "translate-token" (and for "token-type" in the same time)
+\ see also ./ttoken.stdlib.fth
 
 
 \ Useful factor
