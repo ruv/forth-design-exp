@@ -7,13 +7,13 @@
 
 ## API Level 1 (minimal)
 
-`SET-PERCEPTOR      ( xt|0 -- )` <br/>
+`SET-PERCEPTOR      ( xt -- )` <br/>
 Set the perceptor to be the resolver xt.
-Subsequent calls of `PERCEPTOR` word shall return this `xt|0`.
+Subsequent calls of `PERCEPTOR` word shall return this `xt`.
 
-`PERCEPTOR          ( -- xt|0 )` <br/>
+`PERCEPTOR          ( -- xt )` <br/>
 Return the resolver.
-This word shall return either `xt|0` that was set by the previous call
+This word shall return either `xt` that was set by the previous call
 of `SET-PERCEPTOR` word, or the system's default value (see bellow)
 if there was not such a call yet (i.e. before the first such a call).
 
@@ -33,7 +33,7 @@ A Forth system shall perform the following semantics
 in place of (b) and (c) items of The Forth text interpreter algorithm
 (per [section 3.4](http://www.forth200x.org/documents/html/usage.html#section.3.4)
 of the Forth 2012 Standard):
-`PERCEPTOR DUP IF EXECUTE DUP IF EXECUTE TRUE THEN THEN ( flag )`<br/>
+`PERCEPTOR EXECUTE DUP IF EXECUTE TRUE THEN ( flag )`<br/>
 This `flag` is the flag of successful for item (d).
 
 For that the system shall also represent its original (b) and (c) parts

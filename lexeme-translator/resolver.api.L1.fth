@@ -45,7 +45,7 @@ VARIABLE _PERCEPTOR \ a lexeme resolver that is currently used by the system
 \ This word should not be chained with any other resolvers
 \ to avoid unnecessary indirect recursion
 : PERCEIVE-LEXEME ( c-addr u -- k*x xt-tt | c-addr u 0 )
-  PERCEPTOR DUP IF EXECUTE THEN
+  PERCEPTOR EXECUTE
 ;
 
 \ Top-level lexeme translator.
