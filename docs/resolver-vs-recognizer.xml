@@ -132,7 +132,7 @@ FORTH-RECOGNIZER SET-RECOGNIZER DROP
 \ ...
 
 \ Restore the system's resolver
-UNDO-PERCEPTOR
+REVERT-PERCEPTOR
       </td>
     </tr>
     <tr>
@@ -157,7 +157,7 @@ FORTH-RECOGNIZER SET-RECOGNIZER
 \ ...
 
 \ Restore the system's resolver
-UNDO-PERCEPTOR
+REVERT-PERCEPTOR
       </td>
     </tr>
 

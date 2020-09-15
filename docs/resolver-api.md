@@ -8,14 +8,13 @@
 ## API Level 1 (minimal)
 
 `SET-PERCEPTOR      ( xt -- )` <br/>
-Set the perceptor to be the resolver xt.
-Subsequent calls of `PERCEPTOR` word shall return this `xt`.
+Set the perceptor to perform only the resolver identified by `xt`.
+__SET-PERCEPTOR__ word may allot data space.
+
 
 `PERCEPTOR          ( -- xt )` <br/>
-Return the resolver.
-This word shall return either `xt` that was set by the previous call
-of `SET-PERCEPTOR` word, or the system's default value (see bellow)
-if there was not such a call yet (i.e. before the first such a call).
+Return the perceptor.
+__PERCEPTOR__ word may allot data space.
 
 
 `TT-NOOP ( -- )` <br/>
@@ -62,20 +61,21 @@ if other is not stated.
 
 This API is a subject for elaborating.
 
-`ENQUEUE-PERCEPTOR ( xt -- )` <br/>
+`SET-PERCEPTOR-AFTER ( xt -- )` <br/>
 Set the perceptor to be the combination of the perceptor before that and the resolver xt.
 After that the subsequent call of __PERCEPTOR__ word may return the different value.
-__ENQUEUE-PERCEPTOR__ word may allot data space and create a definition.
+__SET-PERCEPTOR-AFTER__ word may allot data space.
 
-`PREEMPT-PERCEPTOR ( xt -- )` <br/>
+`SET-PERCEPTOR-BEFORE ( xt -- )` <br/>
 Set the perceptor to be the combination of the resolver xt and the perceptor before that.
 After that the subsequent call of __PERCEPTOR__ word may return the different value.
-__PREEMPT-PERCEPTOR__ word may allot data space and create a definition.
+__SET-PERCEPTOR-BEFORE__ word may allot data space.
 
-`UNDO-PERCEPTOR ( -- )` <br/>
-Undo the latest changes of the perceptor.
+`REVERT-PERCEPTOR ( -- )` <br/>
+Undo the most recent setting of the perceptor that was not yet undone.
 After that the subsequent call of __PERCEPTOR__ word may return the different value.
-An ambiguous condition exists if there is no such xt.
+An ambiguous condition exists if there is no such setting.
+__REVERT-PERCEPTOR__ word may allot data space.
 
 
 
