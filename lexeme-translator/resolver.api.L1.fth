@@ -45,14 +45,14 @@ VARIABLE _PERCEPTOR \ a lexeme resolver that is currently used by the system
 \ or unchanged lexeme and false.
 \ This word should not be chained with any other resolvers
 \ to avoid unnecessary indirect recursion
-: PERCEIVE-LEXEME ( c-addr u -- k*x xt-tt | c-addr u 0 )
+: PERCEIVE ( c-addr u -- k*x xt-tt | c-addr u 0 )
   PERCEPTOR EXECUTE
 ;
 
 \ Top-level lexeme translator.
 \ It return an effect of translating (if any) and true or unchanged lexeme and false
 : TRANSLATE-LEXEME ( i*x c-addr u -- j*x true | c-addr u 0 )
-  PERCEIVE-LEXEME DUP IF EXECUTE TRUE THEN
+  PERCEIVE DUP IF EXECUTE TRUE THEN
 ;
 \ NB: TRANSLATE-TOKEN is just EXECUTE
 

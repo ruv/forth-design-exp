@@ -17,6 +17,11 @@ Return the perceptor.
 __PERCEPTOR__ word may allot data space.
 
 
+`PERCEIVE          ( c-addr u -- k*x xt-tt | c-addr u 0 )` <br/>
+Perform the perceptor.
+__PERCEPTOR__ word may allot data space.
+
+
 
 ### Changes in the text interpreter
 
@@ -24,7 +29,7 @@ A Forth system shall perform the following semantics
 in place of (b) and (c) items of The Forth text interpreter algorithm
 (per [section 3.4](http://www.forth200x.org/documents/html/usage.html#section.3.4)
 of the Forth 2012 Standard):
-`PERCEPTOR EXECUTE DUP IF EXECUTE TRUE THEN ( flag )`<br/>
+`PERCEIVE DUP IF EXECUTE TRUE THEN ( flag )`<br/>
 This `flag` is the flag of successful for item (d).
 
 For that the system shall also represent its original (b) and (c) parts
@@ -42,7 +47,7 @@ The xt of this definition (__t__)
 is the system's default lexeme resolver (default perceptor)
 and it
 shall be return by `PERCEPTOR` word
-before the first call of `SET-PERCEPTOR` word.
+before setting the perceptor to another resolver.
 
 
 
