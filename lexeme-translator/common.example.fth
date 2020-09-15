@@ -43,8 +43,8 @@ VARIABLE MARKUP
 WORDLIST DUP CONSTANT DEFAULT-MARKUP MARKUP !
 
 \ Resolver for the markup words
-: RESOLVE-MAKRUP-IMMEDIATE ( c-addr u -- c-addr u 0 | tt-noop )
-  MARKUP @ OBEY ?E0 ['] TT-NOOP
+: RESOLVE-MAKRUP ( c-addr u -- c-addr u 0 | tt )
+  2DUP MARKUP @ SEARCH-WORDLIST IF NIP NIP EXIT THEN 0
 ;
 
 \ That is all.
@@ -99,7 +99,7 @@ DROP-CURRENT
 
 \ To give priority to the markup words,
 \ let's put their resolver into the head of the system's chain.
-' RESOLVE-MAKRUP-IMMEDIATE SET-PERCEPTOR-BEFORE
+' RESOLVE-MAKRUP SET-PERCEPTOR-BEFORE
 
 
 

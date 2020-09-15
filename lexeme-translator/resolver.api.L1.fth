@@ -34,8 +34,9 @@ VARIABLE _PERCEPTOR \ a lexeme resolver that is currently used by the system
 \ - to be aligned with naming convention of GET-CURRENT and SET-CURRENT words.
 
 
-\ A resolver has technical ability to do full translating of a lexeme by themself.
+\ A resolver has technical ability to do full translation of a lexeme by itself.
 \ In such case this designated "noop token" translator shall be returned.
+\ Actually it's not safe and discouraged now: a resolver should not have side effects.
 : TT-NOOP ( -- ) ; \ it does nothing
 
 

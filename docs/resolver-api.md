@@ -17,14 +17,6 @@ Return the perceptor.
 __PERCEPTOR__ word may allot data space.
 
 
-`TT-NOOP ( -- )` <br/>
-It is a "noop" token translator that does nothing.
-It shall be returned by a lexeme resolver
-when it has produced a side effect that can be detected via whatever standard API.
-The returned token shall be empty (absent) in this case.
-
-NB: side effects of the resolvers are discouraged, and the word `TT-NOOP` is obsolescent.
-
 
 ### Changes in the text interpreter
 
