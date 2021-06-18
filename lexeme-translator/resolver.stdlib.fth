@@ -98,7 +98,8 @@
 \ Resolve a PQName — a partially qualified name (rvm, 2007)
 \ It is a name that is qualified by the path of wordlists separated by '::'
 \ Example:  S" test passed" MY-WORDLIST::STDIO::TYPE
-\ NB: PQName is translated as a regular word regardless of its immediate flag.
+\ NB: PQName is translated as an ordinary word
+\ (regardless of immediate flag of the components).
 : (RESOLVE-PQNAME-IN) ( d-txt-name wid -- xt tt | 0 )
   BEGIN >R S" ::" SPLIT- -ROT R> SEARCH-WORDLIST WHILE
     ( ... flag-of-split xt ) SWAP WHILE EXECUTE-BALANCED(+1)
