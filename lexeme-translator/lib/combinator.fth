@@ -33,17 +33,17 @@
 
 
 \ Combinator.
-\ Take xt; save copy of top values; execute xt; if it retuns zero
-\ then put the saved values into the place of two values under the top;
-\ otherwise just discard the saved values.
+\ Remove xt from the stack; save copy of two top values; execute xt. If it retuns zero,
+\ then put the saved two values into the place of two values under the top;
+\ otherwise, just discard the saved values.
 : ?RETAIN2 ( i*x 2*x xt -- j*x 2*x 0 | j*x true ) \ xt ( i*x 2*x -- j*x 2*y 0 | j*x true )
   2 PICK 2 PICK 2>R EXECUTE DUP IF RDROP RDROP EXIT THEN DROP 2DROP 2R> 0
 ;
 
 \ Combinator.
-\ Take xt; save copy of two top values; execute xt; if it retuns zero
-\ then put the saved values under the top;
-\ otherwise just discard the saved values.
+\ Remove xt from the stack; save copy of two top values; execute xt. If it retuns zero,
+\ then put the saved two values under the top;
+\ otherwise, just discard the saved values.
 : ?KEEP2 ( i*x 2*x xt -- j*x 2*x 0 | j*x true ) \ xt ( i*x 2*x -- j*x flag )
   2 PICK 2 PICK 2>R EXECUTE DUP IF RDROP RDROP EXIT THEN DROP 2R> 0
 ;
